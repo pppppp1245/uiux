@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 학습 - UI/UX Learning</title>
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 좌측 사이드바 (공통 메뉴) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo">
+                    <span>UI/UX</span> Learning
+                </a>
+                <p class="logo-sub">웹 프론트엔드 학습 사이트</p>
+            </div>
+            
+            <!-- 검색창 -->
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="검색어를 입력하세요...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            
+            <!-- 네비게이션 메뉴 -->
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="../index.html">
+                            <span>🏠</span> 메인 페이지
+                        </a>
+                    </li>
+                    <li>
+                        <a href="html.html">
+                            <span>📄</span> HTML
+                        </a>
+                    </li>
+                    <li>
+                        <a href="css.html">
+                            <span>🎨</span> CSS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript.html">
+                            <span>⚡</span> JavaScript
+                        </a>
+                    </li>
+                    <li>
+                        <a href="jquery.html">
+                            <span>🔷</span> jQuery
+                        </a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="javascript:void(0);" class="submenu-toggle">
+                            <div><span>🎨</span> UI 컴포넌트</div>
+                            <span class="arrow">▼</span>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="ui-components.html#popup">팝업 (Popup)</a></li>
+                            <li><a href="ui-components.html#alert">알럿 (Alert)</a></li>
+                            <li><a href="ui-components.html#toast">토스트 (Toast)</a></li>
+                            <li><a href="ui-components.html#bottomsheet">바텀시트 (Bottom Sheet)</a></li>
+                            <li><a href="ui-components.html#slider">슬라이더 (Slider)</a></li>
+                            <li><a href="ui-components.html#textfield">텍스트 필드 (Text Field)</a></li>
+                            <li><a href="ui-components.html#checkbox-radio">체크박스 & 라디오</a></li>
+                            <li><a href="ui-components.html#dropdown">드롭다운 (Dropdown)</a></li>
+                            <li><a href="ui-components.html#toggle">토글 스위치 (Toggle)</a></li>
+                            <li><a href="ui-components.html#tab">탭 (Tab)</a></li>
+                            <li><a href="ui-components.html#accordion">아코디언 (Accordion)</a></li>
+                            <li><a href="ui-components.html#card">카드 (Card)</a></li>
+                            <li><a href="ui-components.html#carousel">캐러셀 (Carousel)</a></li>
+                            <li><a href="ui-components.html#lightbox">라이트박스 (Lightbox)</a></li>
+                            <li><a href="ui-components.html#gallery">갤러리 (Gallery)</a></li>
+                            <li><a href="ui-components.html#textarea">텍스트 영역 (Textarea)</a></li>
+                            <li><a href="ui-components.html#tooltip">툴팁 (Tooltip)</a></li>
+                            <li><a href="ui-components.html#breadcrumb">브레드크럼 (Breadcrumb)</a></li>
+                            <li><a href="ui-components.html#inputfield">인풋 필드 (Input Field)</a></li>
+                            <li><a href="ui-components.html#picker">피커 (Picker)</a></li>
+                            <li><a href="ui-components.html#coachmark">코치마크 (Coach Mark)</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>© 2026 UI/UX Learning</p>
+                <p>웹 프론트엔드 기술을 배워보세요</p>
+            </div>
+        </aside>
+        
+        <!-- 메인 콘텐츠 영역 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">JavaScript 기초</h1>
+                <p class="page-description">웹 페이지에 동적인 기능을 추가하는 프로그래밍 언어를 배워보세요.</p>
+            </div>
+            
+            <!-- JavaScript란? -->
+            <section class="content-section">
+                <h2 class="section-title">JavaScript란?</h2>
+                <p class="section-description">
+                    JavaScript는 웹 페이지에 동적인 기능을 추가하는 프로그래밍 언어입니다.
+                    HTML과 CSS로 만든 정적인 웹 페이지를 JavaScript로 만들어 동적으로 변화시킬 수 있습니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/js-basics.png" alt="JavaScript 기초" onerror="this.style.display='none'">
+                    <p class="image-caption">JavaScript의 역할</p>
+                </div>
+                
+                <!-- 프롬프트/설명 -->
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 알림</div>
+                    <div class="prompt-content">
+                        JavaScript는 브라우저에서 실행되는 클라이언트 스크립트 언어입니다.
+                        최근에는 Node.js를 사용하여 서버측 개발에도 사용됩니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">JavaScript</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">// 브라우저 경고창 표시</span>
+<span class="function">alert</span>(<span class="string">"안녕하세요!"</span>);
+
+<span class="comment">// 콘솔에 출력</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="string">"JavaScript 시작!"</span>);
+
+<span class="comment">// HTML 요소 선택하고 내용 변경</span>
+<span class="keyword">const</span> heading = <span class="function">document</span>.<span class="function">querySelector</span>(<span class="string">'h1'</span>);
+heading.textContent = <span class="string">"새로운 제목"</span>;</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 변수와 데이터 타입 -->
+            <section class="content-section">
+                <h2 class="section-title">변수와 데이터 타입</h2>
+                <p class="section-description">
+                    JavaScript에서 데이터를 저장하고 다루는 방법을 알아봅시다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/js-variables.png" alt="JavaScript 변수" onerror="this.style.display='none'">
+                    <p class="image-caption">변수의 종류</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box warning">
+                    <div class="prompt-title">⚠️ 주의사항</div>
+                    <div class="prompt-content">
+                        <code>var</code>는 함수 스코프, <code>let</code>은 블록 스코프입니다.
+                        modern JavaScript에서는 <code>const</code>와 <code>let</code> 사용을 권장합니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">JavaScript</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">// 변수 선언</span>
+<span class="keyword">const</span> name = <span class="string">"홍길동"</span>;  <span class="comment">// 변경 불가능한 변수</span>
+<span class="keyword">let</span> age = <span class="value">25</span>;           <span class="comment">// 변경 가능한 변수</span>
+
+<span class="comment">// 데이터 타입</span>
+<span class="keyword">const</span> string = <span class="string">"문자열"</span>;    <span class="comment">// 문자열</span>
+<span class="keyword">const</span> number = <span class="value">123</span>;        <span class="comment">// 숫자</span>
+<span class="keyword">const</span> boolean = <span class="keyword">true</span>;     <span class="comment">// 불리언</span>
+<span class="keyword">const</span> array = [<span class="value">1</span>, <span class="value">2</span>, <span class="value">3</span>];   <span class="comment">// 배열</span>
+<span class="keyword">const</span> object = { <span class="attr">name</span>: <span class="string">"홍길동"</span>, <span class="attr">age</span>: <span class="value">25</span> }; <span class="comment">// 객체</span>
+
+<span class="comment">// 배열 사용</span>
+<span class="function">console</span>.<span class="function">log</span>(array[<span class="value">0</span>]);  <span class="comment">// 1</span>
+<span class="function">console</span>.<span class="function">log</span>(array.length); <span class="comment">// 3</span>
+
+<span class="comment">// 객체 사용</span>
+<span class="function">console</span>.<span class="function">log</span>(object.name); <span class="comment">// 홍길동</span></code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 함수 -->
+            <section class="content-section">
+                <h2 class="section-title">함수 (Function)</h2>
+                <p class="section-description">
+                    재사용 가능한 코드 블록을 만드는 함수를 알아봅시다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/js-functions.png" alt="JavaScript 함수" onerror="this.style.display='none'">
+                    <p class="image-caption">함수의 구조</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box success">
+                    <div class="prompt-title">✅ 팁</div>
+                    <div class="prompt-content">
+                        ES6부터는 화살표 함수(Arrow Function)를 사용하여 더 간결하게 함수를 정의할 수 있습니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">JavaScript</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">// 일반 함수</span>
+<span class="keyword">function</span> <span class="function">greet</span>(name) {
+    <span class="keyword">return</span> <span class="string">`안녕하세요, ${name}님!`</span>;
+}
+
+<span class="comment">// 화살표 함수</span>
+<span class="keyword">const</span> <span class="function">greetArrow</span> = (name) => {
+    <span class="keyword">return</span> <span class="string">`안녕하세요, ${name}님!`</span>;
+};
+
+<span class="comment">// 단축형 (중괄호 생략)</span>
+<span class="keyword">const</span> <span class="function">greetShort</span> = name => <span class="string">`안녕하세요, ${name}님!`</span>;
+
+<span class="comment">// 함수 호출</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="function">greet</span>(<span class="string">"홍길동"</span>)); <span class="comment">// 안녕하세요, 홍길동님!</span></code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- DOM 조작 -->
+            <section class="content-section">
+                <h2 class="section-title">DOM 조작</h2>
+                <p class="section-description">
+                    HTML 요소를 JavaScript로 조작하는 방법을 알아봅시다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/js-dom.png" alt="DOM 조작" onerror="this.style.display='none'">
+                    <p class="image-caption">DOM 트리 구조</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 알림</div>
+                    <div class="prompt-content">
+                        DOM(Document Object Model)은 HTML 문서를 객체로 표현한 것입니다.
+                        JavaScript로 DOM을 조작하여 웹 페이지의 내용을 동적으로 변경할 수 있습니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">JavaScript</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">// 요소 선택</span>
+<span class="keyword">const</span> element = <span class="function">document</span>.<span class="function">querySelector</span>(<span class="string">'.my-class'</span>);
+<span class="keyword">const</span> elements = <span class="function">document</span>.<span class="function">querySelectorAll</span>(<span class="string">'.item'</span>);
+
+<span class="comment">// 내용 변경</span>
+element.textContent = <span class="string">"새로운 텍스트"</span>;
+element.innerHTML = <span class="string">"&lt;strong&gt;강조&lt;/strong&gt;"</span>;
+
+<span class="comment">// 스타일 변경</span>
+element.style.color = <span class="string">"#3498db"</span>;
+element.style.display = <span class="string">"none"</span>;
+
+<span class="comment">// 클래스 추가/제거</span>
+element.classList.add(<span class="string">"active"</span>);
+element.classList.remove(<span class="string">"hidden"</span>);
+element.classList.toggle(<span class="string">"selected"</span>);
+
+<span class="comment">// 이벤트 처리</span>
+element.addEventListener(<span class="string">'click'</span>, <span class="function">function</span>(e) {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"클릭됨!"</span>);
+});</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 연습 문제 -->
+            <section class="content-section">
+                <h2 class="section-title">연습 문제</h2>
+                <p class="section-description">
+                    이제 배운 내용을 바탕으로 연습 문제를 풀어보세요.
+                </p>
+                
+                <div class="example-box">
+                    <h3 class="example-title">문제: 버튼 클릭 카운터</h3>
+                    <p>버튼을 클릭할 때마다 클릭 횟수가 증가하는 기능을 만들어보세요:</p>
+                    <ul class="content-list">
+                        <li>버튼을 클릭하면 카운터 값이 1 증가</li>
+                        <li>현재 카운터 값을 화면에 표시</li>
+                        <li>카운터가 5에 도달하면 "잘했어요!" 메시지 표시</li>
+                    </ul>
+                </div>
+                
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 도움말</div>
+                    <div class="prompt-content">
+                        <code>addEventListener</code>, <code>textContent</code>, <code>if</code> 문을 활용해보세요.
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="../assets/js/common.js"></script>
+</body>
+</html>
