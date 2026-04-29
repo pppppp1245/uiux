@@ -1,0 +1,3006 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI 컴포넌트 - UI/UX Learning</title>
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .alert-box {
+            display: none;
+            min-width: 300px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .alert-box.error { border-left-color: #f44336; }
+        .alert-box.warning { border-left-color: #ff9800; }
+
+        .close-btn {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 20px;
+            color: #999;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+        }
+
+        .toast-item {
+            min-width: 250px;
+            background: rgba(33, 33, 33, 0.9);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 50px;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .sheet-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .bottom-sheet {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            border-radius: 20px 20px 0 0;
+            transition: bottom 0.3s ease-out;
+            z-index: 1001;
+            padding-bottom: 20px;
+        }
+
+        .sheet-handle {
+            width: 40px;
+            height: 5px;
+            background: #dbdbdb;
+            border-radius: 10px;
+            margin: 12px auto;
+        }
+
+        .sheet-content { padding: 0 20px 20px; }
+        .bottom-sheet.active { bottom: 0; }
+        .share-list { list-style: none; padding: 0; }
+        .share-list li { padding: 12px 0; border-bottom: 1px solid #eee; cursor: pointer; }
+        .close-sheet { width: 100%; padding: 12px; margin-top: 10px; background: #f5f5f5; border: none; border-radius: 8px; cursor: pointer; }
+
+        .slider-container { width: 300px; padding: 20px; }
+        .slider-wrapper { display: flex; align-items: center; gap: 10px; }
+        .slider-wrapper span { min-width: 30px; font-weight: 600; color: #007AFF; }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            background: #e1e1e1;
+            border-radius: 4px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #007AFF;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        /* 입력 필드 스타일 */
+        .input-group { margin-bottom: 20px; width: 300px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; }
+        .input-group input[type="email"],
+        .input-group input[type="text"],
+        .input-group input[type="password"],
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        .input-group .helper-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+        }
+        .input-group.error input { border-color: #f44336; }
+        .input-group.error .helper-text { color: #f44336; }
+
+        /* 체크박스 & 라디오 버튼 스타일 */
+        .checkbox-group, .radio-group { margin-bottom: 20px; }
+        .checkbox-group label, .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 0;
+        }
+        .checkbox-group input[type="checkbox"],
+        .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* 커스텀 체크박스 스타일 */
+        .check-group { max-width: 400px; }
+        .check-item { display: flex; align-items: center; cursor: pointer; margin-bottom: 12px; }
+        .check-item input { display: none; }
+        .check-item .box {
+            width: 20px; height: 20px;
+            border: 2px solid #ddd; border-radius: 4px;
+            margin-right: 10px; position: relative;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .check-item input:checked + .box {
+            background-color: #007AFF;
+            border-color: #007AFF;
+        }
+        .check-item input:checked + .box::after {
+            content: ''; position: absolute;
+            left: 6px; top: 2px;
+            width: 5px; height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .check-item.all { font-weight: bold; }
+        .check-group hr { border: none; border-top: 1px solid #eee; margin: 15px 0; }
+
+        /* 탭 스타일 */
+        .tab-system { max-width: 600px; }
+        .tab-header {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+        .tab-link {
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #888;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .tab-link.active {
+            color: #007AFF;
+        }
+        .tab-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0;
+            width: 100%; height: 2px;
+            background: #007AFF;
+        }
+        .tab-content {
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+        .tab-content.active { display: block; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 아코디언 스타일 */
+        .accordion-container { width: 100%; max-width: 600px; border-top: 1px solid #eee; }
+        .accordion-header {
+            padding: 20px;
+            background: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+        .accordion-header:hover { background: #f9f9f9; }
+        .accordion-panel {
+            display: none;
+            padding: 20px;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+            line-height: 1.6;
+        }
+        .arrow { transition: transform 0.3s; }
+        .accordion-header.active .arrow { transform: rotate(180deg); color: #007AFF; }
+        .accordion-header.active { color: #007AFF; }
+
+        /* 카드 스타일 */
+        .card-list { display: flex; gap: 20px; flex-wrap: wrap; }
+        .card {
+            width: 300px;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .card-image img { width: 100%; display: block; }
+        .card-content { padding: 20px; }
+        .category { color: #007AFF; font-size: 12px; font-weight: bold; }
+        .title { margin: 10px 0; font-size: 18px; }
+        .desc { color: #666; font-size: 14px; line-height: 1.5; }
+        .card-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .price { font-weight: bold; font-size: 16px; }
+        .wish-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #ccc; }
+        .wish-btn.active { color: #ff4757; }
+
+        /* CTA 스타일 */
+        .cta-section {
+            padding: 80px 20px;
+            background: #1a1a1a;
+            text-align: center;
+            border-radius: 20px;
+        }
+        .cta-container h2 { color: #fff; font-size: 32px; margin-bottom: 10px; }
+        .cta-container p { color: #aaa; margin-bottom: 30px; }
+        .cta-button {
+            background: #ff4757;
+            color: #fff;
+            padding: 18px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 71, 87, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            background: #ff6b81;
+            box-shadow: 0 15px 30px rgba(255, 71, 87, 0.5);
+        }
+        .cta-caption { font-size: 12px; margin-top: 15px !important; }
+
+        /* 캐러셀 스타일 */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+        }
+        .slide.active { display: flex; }
+        .prev-btn, .next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.3);
+            border: none;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: background 0.3s;
+        }
+        .prev-btn:hover, .next-btn:hover { background: rgba(0,0,0,0.5); }
+        .next-btn { right: 20px; }
+        .prev-btn { left: 20px; }
+        .dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .dot.active { background: #fff; width: 30px; border-radius: 10px; }
+
+        /* 라이트박스 스타일 */
+        .gallery { display: flex; gap: 15px; flex-wrap: wrap; }
+        .gallery img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .gallery img:hover { transform: scale(1.05); }
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 80%;
+            animation: zoomIn 0.3s ease-out;
+        }
+        #lightbox-img { width: 100%; border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #fff;
+            font-size: 35px;
+            cursor: pointer;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* 갤러리 스타일 */
+        .filter-menu { display: flex; gap: 10px; margin-bottom: 20px; }
+        .filter-btn {
+            padding: 8px 20px;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn.active { background: #007AFF; color: #fff; border-color: #007AFF; }
+        .filter-btn:hover:not(.active) { background: #f5f5f5; }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 20px 0;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            transition: transform 0.5s;
+        }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item:hover .overlay { opacity: 1; }
+        .overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* 토글 스위치 스타일 */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #007AFF;
+        }
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        /* 툴팁 스타일 */
+        .tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .help-icon {
+            display: inline-block;
+            width: 20px; height: 20px;
+            background: #eee; border-radius: 50%;
+            text-align: center; line-height: 20px;
+            cursor: pointer; font-size: 12px;
+        }
+        
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            bottom: 30px; left: 50%;
+            transform: translateX(-50%);
+            background: #333; color: #fff;
+            padding: 8px 12px; border-radius: 4px;
+            font-size: 12px; white-space: nowrap;
+            z-index: 10;
+        }
+        
+        .tooltip-box::after {
+            content: '';
+            position: absolute;
+            top: 100%; left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        /* 브레드크럼 스타일 */
+        .breadcrumb-list {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: ">"; /* 구분자 */
+            margin: 0 10px;
+            color: #ccc;
+        }
+
+        .breadcrumb-item a {
+            text-decoration: none;
+            color: #007AFF;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb-item a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-item.current {
+            color: #333;
+            font-weight: bold;
+        }
+        /* 인풋 필드 데모용 스타일 */
+        .input-field-demo {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            width: 300px;
+        }
+
+        .input-field-demo label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .input-field-demo input {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .input-field-demo input:focus {
+            border-color: #007AFF;
+        }
+
+        .input-field-demo.error input {
+            border-color: #ff4757;
+        }
+
+        .input-field-demo .error-msg {
+            display: none;
+            color: #ff4757;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .input-field-demo.error .error-msg {
+            display: block;
+        }
+        /* 피커 데모용 스타일 */
+        .picker-demo-group {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .picker-demo-group label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .picker-demo-group input[type="date"] {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .picker-demo-group input[type="date"]:focus {
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        /* 코치마크 데모용 스타일 */
+        .coach-mark-overlay {
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            border-radius: 8px; /* 데모 영역 내부를 위해 추가 */
+            overflow: hidden;
+        }
+
+        .spotlight {
+            position: absolute;
+            width: 155px; height: 50px;
+            border-radius: 25px;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+            top: 15px; left: 18px;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .coach-content {
+            position: absolute;
+            top: 80px; left: 20px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 좌측 사이드바 (공통 메뉴) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo">
+                    <span>UI/UX</span> Learning
+                </a>
+                <p class="logo-sub">웹 프론트엔드 학습 사이트</p>
+            </div>
+            
+            <!-- 검색창 -->
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="검색어를 입력하세요...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            
+            <!-- 네비게이션 메뉴 -->
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="../index.html">
+                            <span>🏠</span> 메인 페이지
+                        </a>
+                    </li>
+                    <li>
+                        <a href="html.html">
+                            <span>📄</span> HTML
+                        </a>
+                    </li>
+                    <li>
+                        <a href="css.html">
+                            <span>🎨</span> CSS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript.html">
+                            <span>⚡</span> JavaScript
+                        </a>
+                    </li>
+                    <li>
+                        <a href="jquery.html">
+                            <span>🔷</span> jQuery
+                        </a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="javascript:void(0);" class="submenu-toggle">
+                            <div><span>🎨</span> UI 컴포넌트</div>
+                            <span class="arrow">▼</span>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="ui-components.html#popup">팝업 (Popup)</a></li>
+                            <li><a href="ui-components.html#alert">알럿 (Alert)</a></li>
+                            <li><a href="ui-components.html#toast">토스트 (Toast)</a></li>
+                            <li><a href="ui-components.html#bottomsheet">바텀시트 (Bottom Sheet)</a></li>
+                            <li><a href="ui-components.html#slider">슬라이더 (Slider)</a></li>
+                            <li><a href="ui-components.html#textfield">텍스트 필드 (Text Field)</a></li>
+                            <li><a href="ui-components.html#checkbox-radio">체크박스 & 라디오</a></li>
+                            <li><a href="ui-components.html#dropdown">드롭다운 (Dropdown)</a></li>
+                            <li><a href="ui-components.html#toggle">토글 스위치 (Toggle)</a></li>
+                            <li><a href="ui-components.html#tab">탭 (Tab)</a></li>
+                            <li><a href="ui-components.html#accordion">아코디언 (Accordion)</a></li>
+                            <li><a href="ui-components.html#card">카드 (Card)</a></li>
+                            <li><a href="ui-components.html#carousel">캐러셀 (Carousel)</a></li>
+                            <li><a href="ui-components.html#lightbox">라이트박스 (Lightbox)</a></li>
+                            <li><a href="ui-components.html#gallery">갤러리 (Gallery)</a></li>
+                            <li><a href="ui-components.html#textarea">텍스트 영역 (Textarea)</a></li>
+                            <li><a href="ui-components.html#tooltip">툴팁 (Tooltip)</a></li>
+                            <li><a href="ui-components.html#breadcrumb">브레드크럼 (Breadcrumb)</a></li>
+                            <li><a href="ui-components.html#inputfield">인풋 필드 (Input Field)</a></li>
+                            <li><a href="ui-components.html#picker">피커 (Picker)</a></li>
+                            <li><a href="ui-components.html#coachmark">코치마크 (Coach Mark)</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>© 2026 UI/UX Learning</p>
+                <p>웹 프론트엔드 기술을 배워보세요</p>
+            </div>
+        </aside>
+        
+        <!-- 메인 콘텐츠 영역 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">UI 컴포넌트</h1>
+                <p class="page-description">웹 애플리케이션에서 자주 사용되는 UI 컴포넌트들을 학습해보세요.</p>
+            </div>
+            
+            <!-- 팝업 예제 -->
+            <section id="popup" class="content-section" data-keywords="팝업 popup 모달 modal window">
+                <h2 class="section-title">📋 팝업 (Popup)</h2>
+                <p class="section-description">
+                    jQuery를 사용하여 팝업 창을 여는 예제입니다.
+                </p>
+                
+                <div class="example-box">
+                    <h3 class="example-title">이용약관 팝업</h3>
+                    <p style="margin-bottom: 16px;">아래 버튼을 클릭하면 팝업 창이 열립니다.</p>
+                    <button id="openPopup" class="btn btn-primary">이용약관 보기</button>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;!-- 팝업 실행 버튼 --&gt;
+&lt;button id="openPopup" class="btn btn-primary"&gt;이용약관 보기&lt;/button&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>// 팝업 기능
+$('#openPopup').on('click', function() {
+    var url = "popup.html";
+    var name = "TermsPopup";
+    
+    var width = 500;
+    var height = 600;
+    var left = (window.screen.width / 2) - (width / 2);
+    var top = (window.screen.height / 2) - (height / 2);
+    
+    var options = "width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + ", resizable=no, scrollbars=yes, status=no, toolbar=no";
+    
+    window.open(url, name, options);
+});</code></pre></div></div>
+            </section>
+            
+            <!-- 알럿 예제 -->
+            <section id="alert" class="content-section" data-keywords="알럿 alert 경고 warning notification 메시지 message">
+                <h2 class="section-title">🔔 알럿 (Alert)</h2>
+                <p class="section-description">
+                    jQuery를 사용하여 알럿 메시지를 표시하는 예제입니다. <strong>(모바일에서만 가능)</strong>
+                </p>
+                
+                <div class="example-box">
+                    <h3 class="example-title">성공 메시지 알럿</h3>
+                    <p style="margin-bottom: 16px;">아래 버튼을 클릭하면 알럿이 나타납니다.</p>
+                    <button id="triggerAlert" class="btn btn-primary">성공 메시지 띄우기</button>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;!-- 알럿 컨테이너 (오른쪽 상단 배치) --&gt;
+&lt;div id="alertContainer" class="alert-container"&gt;
+    &lt;div class="alert-box success"&gt;
+        &lt;span class="icon"&gt;✔&lt;/span&gt;
+        &lt;span class="message"&gt;데이터가 성공적으로 저장되었습니다.&lt;/span&gt;
+        &lt;span class="close-btn"&gt;&amp;times;&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.alert-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.alert-box {
+    display: none;
+    min-width: 300px;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-left: 5px solid #4CAF50;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>// 알럿 기능
+$('#triggerAlert').on('click', function() {
+    var $alert = $('.alert-box');
+
+    $alert.css({ 'right': '-100px', 'opacity': '0', 'display': 'flex' })
+          .animate({ 'right': '0', 'opacity': '1' }, 300);
+
+    setTimeout(function() {
+        $alert.fadeOut(300);
+    }, 3000);
+});
+
+// 닫기 버튼 클릭 시
+$('.close-btn').on('click', function() {
+    $(this).parent().fadeOut(200);
+});</code></pre></div></div>
+            </section>
+            
+            <!-- 토스트 예제 -->
+            <section id="toast" class="content-section" data-keywords="토스트 toast 알림 notification 메시지 message">
+                <h2 class="section-title">🍞 토스트 (Toast)</h2>
+                <p class="section-description">
+                    jQuery를 사용하여 토스트 메시지를 표시하는 예제입니다. <strong>(모바일에서만 가능)</strong>
+                </p>
+                
+                <div class="example-box">
+                    <h3 class="example-title">작업 완료 토스트</h3>
+                    <p style="margin-bottom: 16px;">아래 버튼을 클릭하면 토스트가 나타납니다.</p>
+                    <button id="showToast" class="btn btn-primary">작업 완료</button>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;!-- 토스트가 담길 컨테이너 --&gt;
+&lt;div id="toastContainer" class="toast-container"&gt;&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.toast-container {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+}
+
+.toast-item {
+    min-width: 250px;
+    background: rgba(33, 33, 33, 0.9);
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 50px;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    display: none;
+}</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>// 토스트 기능
+$('#showToast').on('click', function() {
+    var $toast = $('&lt;div class="toast-item"&gt;성공적으로 처리되었습니다!&lt;/div&gt;');
+    
+    $('#toastContainer').append($toast);
+    $toast.fadeIn(400).delay(2000).fadeOut(400, function() {
+        $(this).remove();
+    });
+});</code></pre></div></div>
+            </section>
+            
+            <!-- 바텀시트 예제 -->
+            <section id="bottomsheet" class="content-section" data-keywords="바텀시트 bottomsheet 시트 sheet 옵션 options 메뉴 menu">
+                <h2 class="section-title">📱 바텀시트 (Bottom Sheet)</h2>
+                <p class="section-description">
+                    jQuery를 사용하여 바텀시트를 표시하는 예제입니다. <strong>(모바일에서만 가능)</strong>
+                </p>
+                
+                <div class="example-box">
+                    <h3 class="example-title">공유하기 바텀시트</h3>
+                    <p style="margin-bottom: 16px;">아래 버튼을 클릭하면 바텀시트가 나타납니다.</p>
+                    <button id="openSheet" class="btn btn-primary">옵션 선택</button>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;!-- 바텀시트 구조 --&gt;
+&lt;div class="sheet-overlay" id="sheetOverlay"&gt;
+    &lt;div class="bottom-sheet" id="bottomSheet"&gt;
+        &lt;div class="sheet-handle"&gt;&lt;/div&gt;
+        &lt;div class="sheet-content"&gt;
+            &lt;h3&gt;공유하기&lt;/h3&gt;
+            &lt;ul class="share-list"&gt;
+                &lt;li&gt;카카오톡&lt;/li&gt;
+                &lt;li&gt;링크 복사&lt;/li&gt;
+                &lt;li&gt;이메일 전송&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;button class="close-sheet"&gt;닫기&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.sheet-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.bottom-sheet {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    transition: bottom 0.3s ease-out;
+    z-index: 1001;
+    padding-bottom: 20px;
+}
+
+.bottom-sheet.active { bottom: 0; }</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>// 바텀시트 기능
+$('#openSheet').on('click', function() {
+    $('#sheetOverlay').fadeIn(200);
+    $('#bottomSheet').addClass('active');
+});
+
+function closeSheet() {
+    $('#bottomSheet').removeClass('active');
+    $('#sheetOverlay').fadeOut(300);
+}
+
+$('.close-sheet, #sheetOverlay').on('click', function(e) {
+    if ($(e.target).is('#sheetOverlay') || $(e.target).is('.close-sheet')) {
+        closeSheet();
+    }
+});</code></pre></div></div>
+            </section>
+            
+            <!-- 슬라이더 예제 -->
+            <section id="slider" class="content-section" data-keywords="슬라이더 slider range 범위 조절 control">
+                <h2 class="section-title">🎚️ 슬라이더 (Slider)</h2>
+                <p class="section-description">
+                    HTML range input을 사용하여 슬라이더를 구현하는 예제입니다.
+                </p>
+                
+                <div class="example-box">
+                    <h3 class="example-title">밝기 조절 슬라이더</h3>
+                    <p style="margin-bottom: 16px;">슬라이더를 드래그하여 값을 조절해보세요.</p>
+                    <div class="slider-container">
+                        <label for="rangeSlider">밝기 조절</label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="rangeSlider" min="0" max="100" value="50">
+                            <span id="sliderValue">50</span>%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="slider-container"&gt;
+    &lt;label for="rangeSlider"&gt;밝기 조절&lt;/label&gt;
+    &lt;div class="slider-wrapper"&gt;
+        &lt;input type="range" id="rangeSlider" min="0" max="100" value="50"&gt;
+        &lt;span id="sliderValue"&gt;50&lt;/span&gt;%
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>// 슬라이더 기능
+$('#rangeSlider').on('input', function() {
+    var val = $(this).val();
+    $('#sliderValue').text(val);
+});</code></pre></div></div>
+            </section>
+            
+            <!-- 입력 필드 예제 -->
+            <section id="textfield" class="content-section" data-keywords="입력필드 input textfield 텍스트 필드 이메일 email">
+                <h2 class="section-title">📝 텍스트 필드 (Text Field)</h2>
+                <p class="section-description">
+                    이름, 이메일, 주소 등을 입력받을 때 사용하는 기본적인 입력 필드입니다.
+                </p>
+                <!-- 이미지 -->
+                <div class="image-container"><img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/text.png" alt="입력 필드 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;"><p class="image-caption">입력 필드 컴포넌트 예시</p></div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">이메일 입력 필드</h3>
+                    <p style="margin-bottom: 16px;">이메일을 입력하고 필드를 벗어나면 유효성 검사가 실행됩니다.</p>
+                    <div class="input-group">
+                        <label for="userEmail">이메일 주소</label>
+                        <input type="email" id="userEmail" placeholder="example@mail.com">
+                        <p class="helper-text">정확한 이메일 형식을 입력해주세요.</p>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="input-group"&gt;
+    &lt;label for="userEmail"&gt;이메일 주소&lt;/label&gt;
+    &lt;input type="email" id="userEmail" placeholder="example@mail.com"&gt;
+    &lt;p class="helper-text"&gt;정확한 이메일 형식을 입력해주세요.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.input-group { margin-bottom: 20px; width: 300px; }
+label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; }
+
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+/* 포커스 시 디자인 변화 */
+input[type="email"]:focus {
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* 에러 상태 클래스 */
+.input-group.error input { border-color: #f44336; }
+.input-group.error .helper-text { color: #f44336; }</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$(document).ready(function() {
+    $('#userEmail').on('blur', function() {
+        var email = $(this).val();
+        var emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (!emailReg.test(email) && email !== "") {
+            $(this).parent().addClass('error');
+            $('.helper-text').text('유효하지 않은 이메일 형식입니다.');
+        } else {
+            $(this).parent().removeClass('error');
+            $('.helper-text').text('정확한 이메일 형식을 입력해주세요.');
+        }
+    });
+});</code></pre></div></div>
+            </section>
+
+            <!-- 체크박스 & 라디오 버튼 예제 -->
+            <section id="checkbox-radio" class="content-section" data-keywords="체크박스 checkbox 라디오 radio 버튼 button 선택 selection">
+                <h2 class="section-title">☑️ 체크박스 & 라디오 버튼 (Checkbox & Radio Button)</h2>
+                <p class="section-description">
+                    여러 선택지 중 하나 또는 그 이상을 선택할 때 사용합니다.
+                </p>
+                <!-- 이미지 -->
+                <div class="image-container"><img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/%E1%84%85%E1%85%A1%E1%84%83%E1%85%B5%E1%84%8B%E1%85%A9.png" alt="라디오 버튼 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;"><p class="image-caption">라디오 버튼 컴포넌트 예시</p></div>
+
+                <div class="example-box">
+                    <h3 class="example-title">체크박스 소개</h3>
+                    <p style="margin-bottom: 16px;">
+                        체크박스(Checkbox)는 사용자로부터 '예/아니오'의 답변을 듣거나, 여러 선택지 중 하나 이상을 선택(다중 선택)받을 때 사용하는 가장 고전적이면서도 필수적인 UI 요소입니다.
+                    </p>
+                    <img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/%25E1%2584%258E%25E1%2585%25A6%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25A8%25E1%2584%2589%25E1%2585%25B3.png" alt="체크박스 예시" style="max-width: 100%; border-radius: 8px; margin-bottom: 16px;">
+                    
+                    <h4 style="margin: 16px 0 8px;">UI/UX 디자인: 체크박스를 사용하는 이유</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>다중 선택 (Multiple Selection)</strong>: 라디오 버튼과 달리 여러 항목을 동시에 선택할 수 있습니다.</li>
+                        <li><strong>독립적 상태</strong>: 각 체크박스는 다른 체크박스에 영향을 주지 않고 개별적인 On/Off 상태를 가집니다.</li>
+                        <li><strong>계층 구조 표현</strong>: '전체 동의'라는 부모 체크박스를 통해 여러 개의 자식 체크박스를 한 번에 제어하는 직관적인 구조를 만들 수 있습니다.</li>
+                        <li><strong>명시적 확인</strong>: 약관 동의처럼 사용자의 확실한 의사 표시가 필요한 곳에 적합합니다.</li>
+                    </ul>
+
+                    <h4 style="margin: 16px 0 8px;">체크박스의 3가지 상태 (States)</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>Unselected (미선택)</strong>: 비어 있는 상태</li>
+                        <li><strong>Selected (선택됨)</strong>: 체크 표시가 나타난 상태</li>
+                        <li><strong>Indeterminate (부분 선택)</strong>: 전체 선택 체크박스에서 하위 항목 중 일부만 선택되었을 때 나타나는 상태입니다. 보통 '-' 모양으로 표시됩니다.</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">전체 동의 체크박스 (커스텀 디자인)</h3>
+                    <p style="margin-bottom: 16px;">전체 동의를 클릭하면 모든 항목이 선택되고, 개별 항목을 선택하면 전체 동의 상태가 자동으로 동기화됩니다.</p>
+                    <div class="check-group">
+                        <label class="check-item all">
+                            <input type="checkbox" id="checkAll">
+                            <span class="box"></span> 전체 동의
+                        </label>
+                        <hr>
+                        <label class="check-item">
+                            <input type="checkbox" class="sub-check">
+                            <span class="box"></span> 서비스 이용약관 (필수)
+                        </label>
+                        <label class="check-item">
+                            <input type="checkbox" class="sub-check">
+                            <span class="box"></span> 개인정보 처리방침 (필수)
+                        </label>
+                        <label class="check-item">
+                            <input type="checkbox" class="sub-check">
+                            <span class="box"></span> 마케팅 정보 수신 (선택)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="check-group"&gt;
+    &lt;!-- 전체 선택 --&gt;
+    &lt;label class="check-item all"&gt;
+        &lt;input type="checkbox" id="checkAll"&gt;
+        &lt;span class="box"&gt;&lt;/span&gt; 전체 동의
+    &lt;/label&gt;
+    &lt;hr&gt;
+    &lt;!-- 개별 선택 --&gt;
+    &lt;label class="check-item"&gt;
+        &lt;input type="checkbox" class="sub-check"&gt;
+        &lt;span class="box"&gt;&lt;/span&gt; 서비스 이용약관 (필수)
+    &lt;/label&gt;
+    &lt;label class="check-item"&gt;
+        &lt;input type="checkbox" class="sub-check"&gt;
+        &lt;span class="box"&gt;&lt;/span&gt; 개인정보 처리방침 (필수)
+    &lt;/label&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>/* 기본 체크박스 숨기기 */
+.check-item input { display: none; }
+
+.check-item { display: flex; align-items: center; cursor: pointer; margin-bottom: 10px; }
+
+/* 커스텀 박스 디자인 */
+.box {
+    width: 20px; height: 20px;
+    border: 2px solid #ddd; border-radius: 4px;
+    margin-right: 10px; position: relative;
+    transition: all 0.2s;
+}
+
+/* 체크되었을 때 스타일 */
+.check-item input:checked + .box {
+    background-color: #007AFF;
+    border-color: #007AFF;
+}
+
+/* 체크 마크 (v) 구현 */
+.check-item input:checked + .box::after {
+    content: ''; position: absolute;
+    left: 6px; top: 2px;
+    width: 5px; height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$(document).ready(function() {
+    // 전체 선택 클릭 시
+    $('#checkAll').on('change', function() {
+        $('.sub-check').prop('checked', $(this).prop('checked'));
+    });
+
+    // 개별 선택 클릭 시 전체 선택 상태 동기화
+    $('.sub-check').on('change', function() {
+        var allCount = $('.sub-check').length;
+        var checkedCount = $('.sub-check:checked').length;
+
+        if (allCount === checkedCount) {
+            $('#checkAll').prop('checked', true);
+        } else {
+            $('#checkAll').prop('checked', false);
+        }
+    });
+});</code></pre></div></div>
+
+                <div class="example-box">
+                    <h3 class="example-title">라디오 버튼 (단일 선택)</h3>
+                    <p style="margin-bottom: 16px;">성별을 하나만 선택할 수 있습니다.</p>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="gender" value="male"> 남성
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="female"> 여성
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="other"> 기타
+                        </label>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="radio-group"&gt;
+    &lt;label&gt;
+        &lt;input type="radio" name="gender" value="male"&gt; 남성
+    &lt;/label&gt;
+    &lt;label&gt;
+        &lt;input type="radio" name="gender" value="female"&gt; 여성
+    &lt;/label&gt;
+    &lt;label&gt;
+        &lt;input type="radio" name="gender" value="other"&gt; 기타
+    &lt;/label&gt;
+&lt;/div&gt;</code></pre></div></div>
+            </section>
+
+            <!-- 드롭다운 예제 -->
+            <section id="dropdown" class="content-section" data-keywords="드롭다운 dropdown 셀렉트 select 박스 box 선택지 options">
+                <h2 class="section-title">📋 드롭다운 & 셀렉트 박스 (Dropdown / Select Box)</h2>
+                <p class="section-description">
+                    제한된 화면 공간에서 많은 선택지 중 하나를 고르게 할 때 사용합니다.
+                </p>
+                <!-- 이미지 -->
+                <div class="image-container"><img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/%E1%84%83%E1%85%B3%E1%84%85%E1%85%A9%E1%86%B8%E1%84%83%E1%85%A1%E1%84%8B%E1%85%AE%E1%86%AB.png" alt="드롭다운 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;"><p class="image-caption">드롭다운 컴포넌트 예시</p></div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">국가 선택 드롭다운</h3>
+                    <p style="margin-bottom: 16px;">국가를 선택해보세요.</p>
+                    <div class="input-group">
+                        <label for="country">국가 선택</label>
+                        <select id="country">
+                            <option value="">선택하세요</option>
+                            <option value="kr">대한민국</option>
+                            <option value="us">미국</option>
+                            <option value="jp">일본</option>
+                            <option value="cn">중국</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="input-group"&gt;
+    &lt;label for="country"&gt;국가 선택&lt;/label&gt;
+    &lt;select id="country"&gt;
+        &lt;option value=""&gt;선택하세요&lt;/option&gt;
+        &lt;option value="kr"&gt;대한민국&lt;/option&gt;
+        &lt;option value="us"&gt;미국&lt;/option&gt;
+        &lt;option value="jp"&gt;일본&lt;/option&gt;
+        &lt;option value="cn"&gt;중국&lt;/option&gt;
+    &lt;/select&gt;
+&lt;/div&gt;</code></pre></div></div>
+            </section>
+
+            <!-- 토글 스위치 예제 -->
+            <section id="toggle" class="content-section" data-keywords="토글 toggle 스위치 switch on off 설정 setting">
+                <h2 class="section-title">🔘 토글 스위치 (Toggle Switch)</h2>
+                <p class="section-description">
+                    설정 화면에서 특정 기능을 켜거나 끌 때 사용합니다.
+                </p>
+                <!-- 이미지 -->
+                <div class="image-container"><img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/%E1%84%90%E1%85%A9%E1%84%80%E1%85%B3%E1%86%AF.png" alt="토글 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;"><p class="image-caption">토글 컴포넌트 예시</p></div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">알림 설정 토글</h3>
+                    <p style="margin-bottom: 16px;">알림을 켜거나 끌 수 있습니다.</p>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notificationToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>알림 받기</span>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;label class="toggle-switch"&gt;
+    &lt;input type="checkbox" id="notificationToggle"&gt;
+    &lt;span class="toggle-slider"&gt;&lt;/span&gt;
+&lt;/label&gt;
+&lt;span&gt;알림 받기&lt;/span&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 26px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: #007AFF;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}</code></pre></div></div>
+            </section>
+
+            <!-- 탭 예제 -->
+            <section id="tab" class="content-section" data-keywords="탭 tab 탭메뉴 tabmenu 카테고리 category 콘텐츠 content">
+                <h2 class="section-title">📑 탭 (Tab)</h2>
+                <p class="section-description">
+                    방대한 양의 콘텐츠를 논리적인 카테고리로 분류하여 효율적으로 표시할 때 사용합니다.
+                </p>
+
+                <div class="example-box">
+                    <h3 class="example-title">탭 소개</h3>
+                    <p style="margin-bottom: 16px;">
+                        탭은 여러 레이어의 정보를 수평으로 겹쳐서 배치하여 사용자가 쉽게 정보를 탐색할 수 있게 하는 UI 컴포넌트입니다.
+                    </p>
+                    
+                    <h4 style="margin: 16px 0 8px;">UI/UX 디자인: 탭을 사용하는 이유</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>정보 구조화</strong>: 방대한 양의 콘텐츠를 논리적인 카테고리로 분류하여 사용자가 정보를 한눈에 파악하기 쉽게 만듭니다.</li>
+                        <li><strong>공간 효율성</strong>: 여러 레이어의 정보를 수평으로 겹쳐서 배치하므로, 수직 스크롤을 획기적으로 줄여줍니다.</li>
+                        <li><strong>맥락 유지</strong>: 전체 페이지 새로고침 없이 내용만 바뀌므로 사용자가 현재 탐색 중인 흐름을 깨뜨리지 않습니다.</li>
+                        <li><strong>즉각적인 비교</strong>: 사용자가 여러 탭을 오가며 정보를 대조하거나 선택하기 편리합니다.</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">제품 정보 탭 (인터랙티브 데모)</h3>
+                    <p style="margin-bottom: 16px;">탭을 클릭하여 내용을 전환해보세요.</p>
+                    <div class="tab-system">
+                        <ul class="tab-header">
+                            <li class="tab-link active" data-tab="tab-1">제품 정보</li>
+                            <li class="tab-link" data-tab="tab-2">상세 사양</li>
+                            <li class="tab-link" data-tab="tab-3">사용자 리뷰</li>
+                        </ul>
+                        <div id="tab-1" class="tab-content active">
+                            <h3>제품 정보</h3>
+                            <p>이 제품은 최신 UI/UX 트렌드를 반영하여 설계되었습니다. 직관적인 인터페이스와 세련된 디자인으로 사용자 경험을 극대화합니다.</p>
+                        </div>
+                        <div id="tab-2" class="tab-content">
+                            <h3>상세 사양</h3>
+                            <p>크기: 200x300mm, 무게: 1.2kg, 소재: 친환경 알루미늄, 해상도: 4K, 배터리: 12시간 연속 사용</p>
+                        </div>
+                        <div id="tab-3" class="tab-content">
+                            <h3>사용자 리뷰</h3>
+                            <p>많은 사용자들이 미니멀한 디자인과 직관적인 사용성에 만족하고 있습니다. 별점 4.8/5.0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="tab-system"&gt;
+    &lt;!-- 탭 헤더: 사용자가 클릭하는 부분 --&gt;
+    &lt;ul class="tab-header"&gt;
+        &lt;li class="tab-link active" data-tab="tab-1"&gt;제품 정보&lt;/li&gt;
+        &lt;li class="tab-link" data-tab="tab-2"&gt;상세 사양&lt;/li&gt;
+        &lt;li class="tab-link" data-tab="tab-3"&gt;사용자 리뷰&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;!-- 탭 본문: 실제 콘텐츠 내용 --&gt;
+    &lt;div id="tab-1" class="tab-content active"&gt;
+        &lt;h3&gt;제품 정보&lt;/h3&gt;
+        &lt;p&gt;이 제품은 최신 UI/UX 트렌드를 반영하여 설계되었습니다.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div id="tab-2" class="tab-content"&gt;
+        &lt;h3&gt;상세 사양&lt;/h3&gt;
+        &lt;p&gt;크기: 200x300mm, 무게: 1.2kg, 소재: 친환경 알루미늄&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div id="tab-3" class="tab-content"&gt;
+        &lt;h3&gt;사용자 리뷰&lt;/h3&gt;
+        &lt;p&gt;많은 사용자들이 미니멀한 디자인에 만족하고 있습니다.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.tab-header {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 20px;
+}
+
+.tab-link {
+    padding: 12px 24px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #888;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* 활성화 상태 스타일 */
+.tab-link.active {
+    color: #007AFF; /* 강조 컬러 */
+}
+
+/* 활성화 라인 (언더라인) */
+.tab-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 100%; height: 2px;
+    background: #007AFF;
+}
+
+.tab-content {
+    display: none; /* 기본적으로 숨김 */
+    animation: slideUp 0.3s ease-out;
+}
+
+.tab-content.active { display: block; }
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$(document).ready(function() {
+    $('.tab-link').on('click', function() {
+        var tabId = $(this).attr('data-tab');
+
+        // 1. 모든 탭과 콘텐츠에서 active 클래스 제거
+        $('.tab-link').removeClass('active');
+        $('.tab-content').removeClass('active');
+
+        // 2. 클릭한 탭과 연결된 콘텐츠 활성화
+        $(this).addClass('active');
+        $("#" + tabId).addClass('active');
+    });
+});</code></pre></div></div>
+            </section>
+
+            <!-- 아코디언 예제 -->
+            <section id="accordion" class="content-section" data-keywords="아코디언 accordion 접기 펼치기 expand collapse faq 질문답변">
+                <h2 class="section-title">📁 아코디언 (Accordion)</h2>
+                <p class="section-description">
+                    제한된 화면 공간에서 많은 양의 정보를 효율적으로 정리하여 보여줄 때 사용합니다.
+                </p>
+
+                <div class="example-box">
+                    <h3 class="example-title">아코디언 소개</h3>
+                    <p style="margin-bottom: 16px;">
+                        아코디언(Accordion) 디자인은 마치 악기 아코디언처럼 콘텐츠를 수직으로 접었다 폈다(Expand/Collapse) 할 수 있는 UI 컴포넌트입니다. 제한된 화면 공간에서 많은 양의 정보를 효율적으로 정리하여 보여줄 때 필수적인 요소입니다.
+                    </p>
+                    
+                    <h4 style="margin: 16px 0 8px;">UI/UX 디자인: 아코디언을 사용하는 이유</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>시각적 노이즈 감소</strong>: 사용자가 당장 필요하지 않은 상세 정보는 숨겨두고, 핵심 제목(Header)만 보여줌으로써 첫인상을 깔끔하게 유지합니다.</li>
+                        <li><strong>수직 공간 절약</strong>: 페이지가 불필요하게 길어지는 것을 방지하여 사용자가 끝없이 스크롤 해야 하는 피로감을 줄여줍니다.</li>
+                        <li><strong>정보 탐색의 효율성</strong>: 사용자가 원하는 질문이나 항목만 골라서 열어볼 수 있게 하여 탐색 속도를 높여줍니다.</li>
+                        <li><strong>점진적 정보 공개(Progressive Disclosure)</strong>: 복잡한 정보를 한꺼번에 쏟아내지 않고, 사용자가 원할 때만 단계적으로 정보를 제공하는 UX 심리학을 충실히 따릅니다.</li>
+                    </ul>
+
+                    <h4 style="margin: 16px 0 8px;">아코디언의 주요 구성 요소</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>헤더(Header)</strong>: 항목의 제목이 담긴 부분입니다. 클릭 시 본문이 열리는 트리거 역할을 합니다.</li>
+                        <li><strong>아이콘(Icon)</strong>: 주로 화살표(Chevron)나 플러스(+) 기호를 사용합니다. 현재 열려 있는지(Up) 닫혀 있는지(Down) 상태를 시각적으로 알려줍니다.</li>
+                        <li><strong>패널(Panel)</strong>: 헤더를 클릭했을 때 나타나는 상세 내용 영역입니다.</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">FAQ 아코디언 (인터랙티브 데모)</h3>
+                    <p style="margin-bottom: 16px;">질문을 클릭하여 답변을 확인해보세요.</p>
+                    <div class="accordion-container">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                Q1. 서비스 이용 시간은 어떻게 되나요?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="accordion-panel">
+                                <p>평일 오전 9시부터 오후 6시까지 상담이 가능하며, 웹 서비스는 24시간 이용 가능합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                Q2. 환불 규정이 궁금합니다.
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="accordion-panel">
+                                <p>구매 후 7일 이내에 서비스 이용 내역이 없는 경우 100% 환불이 가능합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                Q3. 결제 방법은 무엇이 있나요?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="accordion-panel">
+                                <p>신용카드, 계좌이체, 카카오페이, 네이버페이 등 다양한 결제 방법을 지원합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="accordion-container"&gt;
+    &lt;div class="accordion-item"&gt;
+        &lt;div class="accordion-header"&gt;
+            Q1. 서비스 이용 시간은 어떻게 되나요?
+            &lt;span class="arrow"&gt;▼&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="accordion-panel"&gt;
+            &lt;p&gt;평일 오전 9시부터 오후 6시까지 상담이 가능하며, 웹 서비스는 24시간 이용 가능합니다.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="accordion-item"&gt;
+        &lt;div class="accordion-header"&gt;
+            Q2. 환불 규정이 궁금합니다.
+            &lt;span class="arrow"&gt;▼&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="accordion-panel"&gt;
+            &lt;p&gt;구매 후 7일 이내에 서비스 이용 내역이 없는 경우 100% 환불이 가능합니다.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.accordion-container { width: 100%; max-width: 600px; border-top: 1px solid #eee; }
+
+.accordion-header {
+    padding: 20px;
+    background: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s;
+}
+
+.accordion-header:hover { background: #f9f9f9; }
+
+.accordion-panel {
+    display: none; /* 초기 상태 숨김 */
+    padding: 20px;
+    background: #fafafa;
+    border-bottom: 1px solid #eee;
+    line-height: 1.6;
+}
+
+.arrow { transition: transform 0.3s; }
+.accordion-header.active .arrow { transform: rotate(180deg); color: #007AFF; }
+.accordion-header.active { color: #007AFF; }</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$(document).ready(function() {
+    $('.accordion-header').click(function() {
+        // 이미 열려있는 상태라면 닫기
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active').next('.accordion-panel').slideUp();
+        } else {
+            // 다른 열려있는 패널들을 모두 닫고 현재 것만 열기 (선택 사항)
+            $('.accordion-header').removeClass('active');
+            $('.accordion-panel').slideUp();
+
+            $(this).addClass('active').next('.accordion-panel').slideDown();
+        }
+    });
+});</code></pre></div></div>
+            </section>
+
+            <!-- 카드 예제 -->
+            <section id="card" class="content-section" data-keywords="카드 card 상품 product 리스트 list 그리드 grid">
+                <h2 class="section-title">🃏 카드 (Card)</h2>
+                <p class="section-description">
+                    관련 있는 정보를 하나의 박스 안에 묶어 제공하는 UI 컴포넌트입니다.
+                </p>
+                <!-- 이미지 -->
+                <div class="image-container"><img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/%E1%84%8F%E1%85%A1%E1%84%83%E1%85%B3.png" alt="카드 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;"><p class="image-caption">카드 컴포넌트 예시</p></div>
+
+                <div class="example-box">
+                    <h3 class="example-title">카드 소개</h3>
+                    <p style="margin-bottom: 16px;">
+                        카드(Card) 디자인은 관련 있는 정보(이미지, 제목, 텍스트, 버튼 등)를 하나의 박스 안에 묶어 제공하는 UI 컴포넌트입니다. 현대 웹/앱 디자인에서 가장 널리 쓰이며, 특히 인스타그램, 핀터레스트, 유튜브 같은 콘텐츠 중심 서비스의 근간이 되는 디자인입니다.
+                    </p>
+                    
+                    <h4 style="margin: 16px 0 8px;">UI/UX 디자인: 카드 형태를 사용하는 이유</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>정보의 독립성</strong>: 각 카드가 하나의 개별적인 주제나 상품을 나타내므로, 정보 간의 구분이 명확합니다.</li>
+                        <li><strong>반응형 디자인에 최적</strong>: 화면 크기에 따라 카드의 개수를 가로로 3개, 2개, 1개로 재배치하기 매우 쉬워 모바일과 PC 모두에 적합합니다.</li>
+                        <li><strong>탐색의 용이성</strong>: 사용자가 여러 정보를 훑어보며(Browsing) 관심 있는 항목을 빠르게 선택할 수 있도록 돕습니다.</li>
+                        <li><strong>시각적 매력</strong>: 텍스트만 나열하는 것보다 이미지와 레이아웃을 활용해 정보를 훨씬 더 매력적으로 보여줄 수 있습니다.</li>
+                    </ul>
+
+                    <h4 style="margin: 16px 0 8px;">카드의 핵심 구성 요소</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>미디어(Media)</strong>: 카드 상단에 위치하는 이미지나 영상. 시선을 끄는 역할을 합니다.</li>
+                        <li><strong>헤더(Header)</strong>: 제목과 부제목. 카드의 핵심 내용을 전달합니다.</li>
+                        <li><strong>본문(Body)</strong>: 요약된 설명 문구.</li>
+                        <li><strong>작업 영역(Actions)</strong>: '더 보기', '좋아요', '구매하기'와 같은 버튼이나 아이콘.</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">상품 카드 (인터랙티브 데모)</h3>
+                    <p style="margin-bottom: 16px;">카드에 마우스를 올려보고 하트 버튼을 클릭해보세요.</p>
+                    <div class="card-list">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="https://via.placeholder.com/300x200" alt="상품이미지">
+                            </div>
+                            <div class="card-content">
+                                <span class="category">인테리어</span>
+                                <h3 class="title">미니멀 화이트 스탠드</h3>
+                                <p class="desc">부드러운 조명으로 공간의 분위기를 바꿔보세요.</p>
+                                <div class="card-footer">
+                                    <span class="price">45,000원</span>
+                                    <button class="wish-btn">❤</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="https://via.placeholder.com/300x200" alt="상품이미지">
+                            </div>
+                            <div class="card-content">
+                                <span class="category">전자기기</span>
+                                <h3 class="title">무선 블루투스 스피커</h3>
+                                <p class="desc">어디서나 깨끗한 음질을 즐기세요.</p>
+                                <div class="card-footer">
+                                    <span class="price">89,000원</span>
+                                    <button class="wish-btn">❤</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="card-list"&gt;
+    &lt;!-- 카드 아이템 --&gt;
+    &lt;div class="card"&gt;
+        &lt;div class="card-image"&gt;
+            &lt;img src="https://via.placeholder.com/300x200" alt="상품이미지"&gt;
+        &lt;/div&gt;
+        &lt;div class="card-content"&gt;
+            &lt;span class="category"&gt;인테리어&lt;/span&gt;
+            &lt;h3 class="title"&gt;미니멀 화이트 스탠드&lt;/h3&gt;
+            &lt;p class="desc"&gt;부드러운 조명으로 공간의 분위기를 바꿔보세요.&lt;/p&gt;
+            &lt;div class="card-footer"&gt;
+                &lt;span class="price"&gt;45,000원&lt;/span&gt;
+                &lt;button class="wish-btn"&gt;❤&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.card {
+    width: 300px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden; /* 이미지가 둥근 모서리를 벗어나지 않게 */
+    border: 1px solid #eee;
+    transition: all 0.3s ease; /* 애니메이션 속도 */
+}
+
+/* 호버 효과: 사용자가 카드를 선택하려 할 때 시각적 피드백 */
+.card:hover {
+    transform: translateY(-10px); /* 위로 이동 */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1); /* 그림자 강조 */
+}
+
+.card-image img { width: 100%; display: block; }
+
+.card-content { padding: 20px; }
+.category { color: #007AFF; font-size: 12px; font-weight: bold; }
+.title { margin: 10px 0; font-size: 18px; }
+.desc { color: #666; font-size: 14px; line-height: 1.5; }
+
+.card-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.price { font-weight: bold; font-size: 16px; }
+.wish-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #ccc; }
+.wish-btn.active { color: #ff4757; }</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$(document).ready(function() {
+    $('.wish-btn').click(function() {
+        $(this).toggleClass('active'); // 찜하기 토글 기능
+    });
+});</code></pre></div></div>
+            </section>
+
+            <!-- CTA 예제 -->
+            <section id="cta" class="content-section" data-keywords="cta call to action 행동유도 버튼 button 전환 conversion">
+                <h2 class="section-title">🎯 CTA (Call to Action)</h2>
+                <p class="section-description">
+                    사용자에게 특정 행동을 유도하는 마케팅적 UI 요소입니다.
+                </p>
+                <!-- 이미지 -->
+                <div class="image-container"><img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/cta.png" alt="CTA 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;"><p class="image-caption">CTA 컴포넌트 예시</p></div>
+
+                <div class="example-box">
+                    <h3 class="example-title">CTA 소개</h3>
+                    <p style="margin-bottom: 16px;">
+                        CTA(Call to Action, 행동 유도) 디자인은 사용자에게 "이 버튼을 눌러보세요!"라고 명확하게 요청하여 특정 행동(구매, 가입, 다운로드 등)을 이끌어내는 마케팅적 UI 요소입니다. 웹사이트나 앱의 존재 목적(매출, 회원 확보)을 달성하는 데 가장 결정적인 역할을 합니다.
+                    </p>
+                    
+                    <h4 style="margin: 16px 0 8px;">UI/UX 디자인: CTA가 중요한 이유</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>목표 달성의 핵심</strong>: 사용자가 웹사이트에서 헤매지 않고, 서비스가 원하는 최종 단계(결제 등)로 넘어가게 하는 '가이드' 역할을 합니다.</li>
+                        <li><strong>의사결정 보조</strong>: 사용자가 고민하는 순간, 명확한 문구와 눈에 띄는 디자인으로 행동의 근거를 제공합니다.</li>
+                        <li><strong>전환율(Conversion Rate) 향상</strong>: 잘 설계된 CTA 버튼 하나가 비즈니스의 성패를 가를 만큼 강력한 영향력을 미칩니다.</li>
+                    </ul>
+
+                    <h4 style="margin: 16px 0 8px;">CTA 디자인의 3대 원칙</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>시각적 대비(Contrast)</strong>: 주변 요소보다 훨씬 눈에 띄어야 합니다. 가장 강렬한 브랜드 컬러를 사용하세요.</li>
+                        <li><strong>명확한 문구(Microcopy)</strong>: "확인"이나 "제출" 같은 모호한 단어보다 "30일간 무료 체험하기", "지금 바로 50% 할인받기"처럼 구체적인 이득을 명시하세요.</li>
+                        <li><strong>적절한 위치</strong>: 사용자가 정보를 다 읽고 행동할 준비가 된 시점(스크롤 하단)이나, 언제든 누를 수 있는 고정된 위치(상단 내비게이션 등)에 배치해야 합니다.</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">CTA 섹션 (인터랙티브 데모)</h3>
+                    <p style="margin-bottom: 16px;">버튼에 마우스를 올려보고 클릭해보세요.</p>
+                    <section class="cta-section">
+                        <div class="cta-container">
+                            <h2>디자인 공부, 지금 바로 시작하세요</h2>
+                            <p>현직 디자이너가 알려주는 실무 UI/UX 노하우를 7일간 무료로 경험해보세요.</p>
+                            <button id="mainCtaBtn" class="cta-button">
+                                무료로 시작하기 <span>&rarr;</span>
+                            </button>
+                            <p class="cta-caption">* 신용카드 등록이 필요 없습니다.</p>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;section class="cta-section"&gt;
+    &lt;div class="cta-container"&gt;
+        &lt;h2&gt;디자인 공부, 지금 바로 시작하세요&lt;/h2&gt;
+        &lt;p&gt;현직 디자이너가 알려주는 실무 UI/UX 노하우를 7일간 무료로 경험해보세요.&lt;/p&gt;
+        
+        &lt;!-- CTA 버튼 --&gt;
+        &lt;button id="mainCtaBtn" class="cta-button"&gt;
+            무료로 시작하기 &lt;span&gt;&amp;rarr;&lt;/span&gt;
+        &lt;/button&gt;
+        
+        &lt;p class="cta-caption"&gt;* 신용카드 등록이 필요 없습니다.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.cta-section {
+    padding: 80px 20px;
+    background: #1a1a1a; /* 어두운 배경으로 대비 극대화 */
+    text-align: center;
+    border-radius: 20px;
+}
+
+.cta-container h2 { color: #fff; font-size: 32px; margin-bottom: 10px; }
+.cta-container p { color: #aaa; margin-bottom: 30px; }
+
+.cta-button {
+    background: #ff4757; /* 강렬한 레드/오렌지 계열 */
+    color: #fff;
+    padding: 18px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(255, 71, 87, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 호버 애니메이션: 클릭 욕구 자극 */
+.cta-button:hover {
+    transform: scale(1.05); /* 살짝 커짐 */
+    background: #ff6b81;
+    box-shadow: 0 15px 30px rgba(255, 71, 87, 0.5);
+}
+
+.cta-caption { font-size: 12px; margin-top: 15px !important; }</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$(document).ready(function() {
+    $('#mainCtaBtn').click(function() {
+        alert("성공적으로 신청되었습니다! 웰컴 메일을 확인해주세요.");
+        // 실무에서는 여기서 페이지 이동이나 모달 오픈을 수행합니다.
+    });
+});</code></pre></div></div>
+            </section>
+
+            <!-- 캐러셀 예제 -->
+            <section id="carousel" class="content-section" data-keywords="캐러셀 carousel 슬라이드 slide 배너 banner 회전목마">
+                <h2 class="section-title">🎠 캐러셀 (Carousel)</h2>
+                <p class="section-description">
+                    한정된 공간 안에 여러 개의 콘텐츠를 슬라이드 방식으로 순차적으로 보여주는 UI 컴포넌트입니다.
+                </p>
+                <!-- 이미지 -->
+                <div class="image-container"><img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/card.png" alt="캐러셀 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;"><p class="image-caption">캐러셀 컴포넌트 예시</p></div>
+
+                <div class="example-box">
+                    <h3 class="example-title">캐러셀 소개</h3>
+                    <p style="margin-bottom: 16px;">
+                        캐러셀(Carousel) 디자인은 한정된 공간 안에 여러 개의 콘텐츠(주로 이미지나 배너)를 슬라이드 방식으로 배치하여 순차적으로 보여주는 UI 컴포넌트입니다. 놀이공원의 '회전목마'처럼 콘텐츠가 돌아가며 나타난다고 해서 붙여진 이름입니다.
+                    </p>
+                    
+                    <h4 style="margin: 16px 0 8px;">UI/UX 디자인: 캐러셀을 사용하는 이유</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>공간 효율성</strong>: 화면의 최상단(Hero Section) 같은 금싸라기 땅에 여러 개의 중요한 메시지나 프로모션을 겹쳐서 배치할 수 있습니다.</li>
+                        <li><strong>시각적 역동성</strong>: 정적인 페이지에 움직임을 주어 사용자의 시선을 즉각적으로 사로잡습니다.</li>
+                        <li><strong>콘텐츠 큐레이션</strong>: 서비스에서 가장 강조하고 싶은 핵심 콘텐츠들을 요약해서 보여주기에 최적입니다.</li>
+                    </ul>
+
+                    <h4 style="margin: 16px 0 8px;">캐러셀의 핵심 구성 요소</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>슬라이드(Slides)</strong>: 실제 내용이 담긴 이미지나 카드 섹션입니다.</li>
+                        <li><strong>내비게이션 화살표(Arrows)</strong>: 왼쪽/오른쪽으로 수동 이동할 수 있는 트리거입니다.</li>
+                        <li><strong>인디케이터(Indicators/Dots)</strong>: 전체 슬라이드 개수와 현재 위치를 점(Dot)이나 숫자로 나타냅니다.</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">이벤트 캐러셀 (인터랙티브 데모)</h3>
+                    <p style="margin-bottom: 16px;">화살표 버튼이나 하단 점을 클릭하여 슬라이드를 전환해보세요.</p>
+                    <div class="carousel-container">
+                        <div class="carousel-wrapper">
+                            <div class="slide active" style="background-color: #ff7675;"><h1>첫 번째 이벤트</h1></div>
+                            <div class="slide" style="background-color: #74b9ff;"><h1>두 번째 신상품</h1></div>
+                            <div class="slide" style="background-color: #55efc4;"><h1>세 번째 공지사항</h1></div>
+                        </div>
+                        <button class="prev-btn">&lt;</button>
+                        <button class="next-btn">&gt;</button>
+                        <div class="dots">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="carousel-container"&gt;
+    &lt;div class="carousel-wrapper"&gt;
+        &lt;!-- 슬라이드 아이템들 --&gt;
+        &lt;div class="slide active" style="background-color: #ff7675;"&gt;&lt;h1&gt;첫 번째 이벤트&lt;/h1&gt;&lt;/div&gt;
+        &lt;div class="slide" style="background-color: #74b9ff;"&gt;&lt;h1&gt;두 번째 신상품&lt;/h1&gt;&lt;/div&gt;
+        &lt;div class="slide" style="background-color: #55efc4;"&gt;&lt;h1&gt;세 번째 공지사항&lt;/h1&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- 좌우 컨트롤 --&gt;
+    &lt;button class="prev-btn"&gt;&amp;lt;&lt;/button&gt;
+    &lt;button class="next-btn"&gt;&amp;gt;&lt;/button&gt;
+
+    &lt;!-- 인디케이터 --&gt;
+    &lt;div class="dots"&gt;
+        &lt;span class="dot active"&gt;&lt;/span&gt;
+        &lt;span class="dot"&gt;&lt;/span&gt;
+        &lt;span class="dot"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.carousel-container {
+    position: relative;
+    width: 100%; height: 400px;
+    overflow: hidden; /* 영역 밖 콘텐츠 숨김 */
+}
+.slide {
+    position: absolute;
+    width: 100%; height: 100%;
+    display: none; /* 기본 숨김 */
+    align-items: center; justify-content: center;
+    color: #fff; font-size: 2rem;
+}
+.slide.active { display: flex; }
+
+/* 컨트롤 버튼 */
+.prev-btn, .next-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(0,0,0,0.3); border: none; color: white;
+    padding: 15px; cursor: pointer; z-index: 10;
+}
+.next-btn { right: 0; }
+
+/* 인디케이터 */
+.dots {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+}
+.dot {
+    display: inline-block; width: 10px; height: 10px;
+    background: rgba(255,255,255,0.5); border-radius: 50%; margin: 0 5px;
+}
+.dot.active { background: #fff; width: 30px; border-radius: 10px; } /* 활성 상태 강조 */</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$(document).ready(function() {
+    var currentIndex = 0;
+    var slideCount = $('.slide').length;
+
+    function showSlide(index) {
+        $('.slide').removeClass('active').hide();
+        $('.dot').removeClass('active');
+        
+        $('.slide').eq(index).fadeIn(500).addClass('active');
+        $('.dot').eq(index).addClass('active');
+    }
+
+    $('.next-btn').click(function() {
+        currentIndex = (currentIndex + 1) % slideCount;
+        showSlide(currentIndex);
+    });
+
+    $('.prev-btn').click(function() {
+        currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+        showSlide(currentIndex);
+    });
+});</code></pre></div></div>
+            </section>
+
+            <!-- 라이트박스 예제 -->
+            <section id="lightbox" class="content-section" data-keywords="라이트박스 lightbox 모달 modal 이미지 image 확대 zoom 오버레이 overlay">
+                <h2 class="section-title">🖼️ 라이트박스 (Lightbox)</h2>
+                <p class="section-description">
+                    이미지를 클릭했을 때 주변 배경을 어둡게 처리하면서 해당 콘텐츠를 화면 중앙에 크게 띄워 집중시키는 UI 컴포넌트입니다.
+                </p>
+
+                <div class="example-box">
+                    <h3 class="example-title">라이트박스 소개</h3>
+                    <p style="margin-bottom: 16px;">
+                        라이트박스(Lightbox) 디자인은 특정 이미지나 콘텐츠를 클릭했을 때, 주변 배경을 어둡게 처리(Overlay)하면서 해당 콘텐츠를 화면 중앙에 크게 띄워 집중시키는 UI 컴포넌트입니다. 사용자가 현재 페이지를 떠나지 않고도 상세 내용을 깊이 있게 확인할 수 있도록 돕는 일종의 '모달(Modal) 윈도우'의 한 형태입니다.
+                    </p>
+                    
+                    <h4 style="margin: 16px 0 8px;">UI/UX 디자인: 라이트박스를 사용하는 이유</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>몰입감 증대</strong>: 주변의 복잡한 UI 요소들을 어둡게 가림으로써 사용자가 보고 있는 이미지나 영상에만 완벽하게 집중하게 만듭니다.</li>
+                        <li><strong>맥락 유지</strong>: 상세 페이지로 새로고침하여 이동하는 것이 아니라, 현재 위치 위로 창을 띄우는 것이기 때문에 탐색 흐름이 끊기지 않습니다.</li>
+                        <li><strong>공간 제약 극복</strong>: 목록에서는 작은 썸네일로 보여주고, 상세 정보는 라이트박스를 통해 고해상도로 제공할 수 있어 디자인적 효율이 높습니다.</li>
+                    </ul>
+
+                    <h4 style="margin: 16px 0 8px;">라이트박스의 핵심 구성 요소</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>오버레이(Overlay/Dimmer)</strong>: 기존 화면을 가리는 반투명한 검은색 배경입니다.</li>
+                        <li><strong>스테이지(Stage)</strong>: 메인 이미지나 영상이 출력되는 중앙 영역입니다.</li>
+                        <li><strong>닫기 버튼(Close Button)</strong>: 주로 우측 상단에 'X' 표시로 위치하여 사용자가 언제든 복귀할 수 있게 합니다.</li>
+                        <li><strong>캡션(Caption)</strong>: 이미지 하단에 붙는 제목이나 추가 설명입니다.</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">이미지 갤러리 (인터랙티브 데모)</h3>
+                    <p style="margin-bottom: 16px;">썸네일 이미지를 클릭하여 라이트박스를 확인해보세요.</p>
+                    <div class="gallery">
+                        <img src="https://via.placeholder.com/150" class="lightbox-trigger" data-full="https://via.placeholder.com/800x600" alt="풍경 사진 1">
+                        <img src="https://via.placeholder.com/150" class="lightbox-trigger" data-full="https://via.placeholder.com/800x500" alt="풍경 사진 2">
+                        <img src="https://via.placeholder.com/150" class="lightbox-trigger" data-full="https://via.placeholder.com/800x550" alt="풍경 사진 3">
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;!-- 갤러리 썸네일 목록 --&gt;
+&lt;div class="gallery"&gt;
+    &lt;img src="https://via.placeholder.com/150" class="lightbox-trigger" data-full="https://via.placeholder.com/800x600" alt="풍경 사진 1"&gt;
+    &lt;img src="https://via.placeholder.com/150" class="lightbox-trigger" data-full="https://via.placeholder.com/800x500" alt="풍경 사진 2"&gt;
+&lt;/div&gt;
+
+&lt;!-- 라이트박스 구조 (평소엔 숨김) --&gt;
+&lt;div class="lightbox-overlay"&gt;
+    &lt;div class="lightbox-content"&gt;
+        &lt;span class="close-btn"&gt;&amp;times;&lt;/span&gt;
+        &lt;img src="" id="lightbox-img"&gt;
+        &lt;div id="caption"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>/* 오버레이: 화면 전체를 덮는 어두운 배경 */
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1000;
+    justify-content: center; align-items: center;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%; max-height: 80%;
+    animation: zoomIn 0.3s ease-out;
+}
+
+#lightbox-img { width: 100%; border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+
+.close-btn {
+    position: absolute; top: -40px; right: 0;
+    color: #fff; font-size: 35px; cursor: pointer;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$(document).ready(function() {
+    // 썸네일 클릭 시 열기
+    $('.lightbox-trigger').click(function() {
+        var fullImgUrl = $(this).attr('data-full');
+        var altText = $(this).attr('alt');
+        
+        $('#lightbox-img').attr('src', fullImgUrl);
+        $('#caption').text(altText);
+        $('.lightbox-overlay').fadeIn(300).css('display', 'flex');
+        $('body').css('overflow', 'hidden'); // 본문 스크롤 방지
+    });
+
+    // 닫기 버튼 또는 배경 클릭 시 닫기
+    $('.close-btn, .lightbox-overlay').click(function(e) {
+        if (e.target !== e.currentTarget && e.target.className !== 'close-btn') return;
+        $('.lightbox-overlay').fadeOut(300);
+        $('body').css('overflow', 'auto'); // 스크롤 복원
+    });
+});</code></pre></div></div>
+
+                <!-- 라이트박스 구조 (페이지 하단에 추가) -->
+                <div class="lightbox-overlay">
+                    <div class="lightbox-content">
+                        <span class="close-btn">&times;</span>
+                        <img src="" id="lightbox-img">
+                        <div id="caption"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 갤러리 예제 -->
+            <section id="gallery" class="content-section" data-keywords="갤러리 gallery 그리드 grid 필터 filter 이미지 image">
+                <h2 class="section-title">🖼️ 갤러리 (Gallery)</h2>
+                <p class="section-description">
+                    여러 장의 이미지나 시각적 콘텐츠를 체계적인 레이아웃으로 배열하여 사용자가 한눈에 훑어보고 탐색할 수 있도록 만든 인터페이스입니다.
+                </p>
+
+                <div class="example-box">
+                    <h3 class="example-title">갤러리 소개</h3>
+                    <p style="margin-bottom: 16px;">
+                        갤러리(Gallery) 디자인은 여러 장의 이미지나 시각적 콘텐츠를 체계적인 레이아웃으로 배열하여 사용자가 한눈에 훑어보고 탐색할 수 있도록 만든 인터페이스입니다. 단순한 이미지 나열을 넘어, 서비스의 성격(포트폴리오, 커머스, SNS 등)에 따라 정보를 구성하는 방식이 달라집니다.
+                    </p>
+                    
+                    <h4 style="margin: 16px 0 8px;">갤러리 디자인의 주요 레이아웃 유형</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>그리드 갤러리 (Grid Gallery)</strong>: 모든 이미지를 동일한 크기의 정사각형이나 직사각형 박스에 배치합니다. 질서 정연하고 깔끔한 느낌을 주며, 제품 목록이나 인스타그램 프로필 페이지에 주로 쓰입니다.</li>
+                        <li><strong>메이슨리 갤러리 (Masonry Gallery)</strong>: 이미지의 가로 길이는 고정하되, 세로 길이는 원본 비율에 따라 다르게 배치하는 방식입니다. '벽돌 쌓기' 방식이라고도 하며, 핀터레스트(Pinterest)가 대표적입니다. 시각적으로 역동적이고 지루하지 않습니다.</li>
+                        <li><strong>슬라이딩/필름스트립 갤러리 (Sliding Gallery)</strong>: 한 번에 하나 혹은 소수의 이미지만 보여주며 가로로 넘겨보는 방식입니다. 공간이 좁은 모바일이나 메인 히어로 섹션에 적합합니다.</li>
+                    </ul>
+
+                    <h4 style="margin: 16px 0 8px;">갤러리 UI 디자인의 핵심 요소</h4>
+                    <ul style="margin-bottom: 16px; padding-left: 20px;">
+                        <li><strong>썸네일(Thumbnail)</strong>: 원본보다 작은 크기의 이미지로, 빠른 로딩과 전체적인 탐색을 돕습니다.</li>
+                        <li><strong>호버 효과(Hover Effect)</strong>: 마우스를 올렸을 때 이미지가 커지거나, 제목/설명이 나타나는 등의 피드백을 주어 클릭을 유도합니다.</li>
+                        <li><strong>필터 및 정렬 (Filtering & Sorting)</strong>: 사용자가 원하는 카테고리나 최신순 등으로 콘텐츠를 걸러볼 수 있게 합니다.</li>
+                        <li><strong>라이트박스 연결</strong>: 썸네일을 클릭했을 때 앞서 배운 라이트박스 형태로 원본 이미지를 크게 보여주는 것이 일반적인 패턴입니다.</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3 class="example-title">필터링 갤러리 (인터랙티브 데모)</h3>
+                    <p style="margin-bottom: 16px;">필터 버튼을 클릭하여 카테고리별로 이미지를 필터링해보세요.</p>
+                    <div class="gallery-container">
+                        <div class="filter-menu">
+                            <button class="filter-btn active" data-filter="all">전체</button>
+                            <button class="filter-btn" data-filter="nature">자연</button>
+                            <button class="filter-btn" data-filter="city">도시</button>
+                        </div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item nature">
+                                <img src="https://via.placeholder.com/300x300/2ecc71/ffffff?text=Nature+1" alt="Nature">
+                                <div class="overlay"><span>숲의 아침</span></div>
+                            </div>
+                            <div class="gallery-item city">
+                                <img src="https://via.placeholder.com/300x300/3498db/ffffff?text=City+1" alt="City">
+                                <div class="overlay"><span>도시의 밤</span></div>
+                            </div>
+                            <div class="gallery-item nature">
+                                <img src="https://via.placeholder.com/300x300/27ae60/ffffff?text=Nature+2" alt="Nature">
+                                <div class="overlay"><span>푸른 벌판</span></div>
+                            </div>
+                            <div class="gallery-item city">
+                                <img src="https://via.placeholder.com/300x300/2980b9/ffffff?text=City+2" alt="City">
+                                <div class="overlay"><span>빌딩 숲</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="gallery-container"&gt;
+    &lt;!-- 필터 메뉴 --&gt;
+    &lt;div class="filter-menu"&gt;
+        &lt;button class="filter-btn active" data-filter="all"&gt;전체&lt;/button&gt;
+        &lt;button class="filter-btn" data-filter="nature"&gt;자연&lt;/button&gt;
+        &lt;button class="filter-btn" data-filter="city"&gt;도시&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- 갤러리 아이템 --&gt;
+    &lt;div class="gallery-grid"&gt;
+        &lt;div class="gallery-item nature"&gt;
+            &lt;img src="..." alt="Nature"&gt;
+            &lt;div class="overlay"&gt;&lt;span&gt;숲의 아침&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="gallery-item city"&gt;
+            &lt;img src="..." alt="City"&gt;
+            &lt;div class="overlay"&gt;&lt;span&gt;도시의 밤&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 반응형 그리드 */
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.gallery-item img {
+    width: 100%; transition: transform 0.5s;
+}
+
+/* 호버 시 이미지 확대 및 오버레이 노출 */
+.gallery-item:hover img { transform: scale(1.1); }
+.gallery-item:hover .overlay { opacity: 1; }
+
+.overlay {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
+}</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$(document).ready(function() {
+    $('.filter-btn').click(function() {
+        var value = $(this).attr('data-filter');
+        
+        $('.filter-btn').removeClass('active');
+        $(this).addClass('active');
+
+        if(value == "all") {
+            $('.gallery-item').fadeIn(400);
+        } else {
+            $('.gallery-item').not('.' + value).fadeOut(200);
+            $('.gallery-item').filter('.' + value).fadeIn(400);
+        }
+    });
+});</code></pre></div></div>
+            </section>
+
+            <!-- 텍스트 영역 예제 -->
+            <section id="textarea" class="content-section" data-keywords="텍스트 영역 textarea 긴 문장 문의 inquiry 자기소개 introduction">
+                <h2 class="section-title">📄 텍스트 영역 (Text Area)</h2>
+                <p class="section-description">
+                    문의 내용이나 자기소개처럼 긴 문장을 입력받을 때 사용합니다.
+                </p>
+                
+                <div class="example-box">
+                    <h3 class="example-title">문의 내용 입력</h3>
+                    <p style="margin-bottom: 16px;">문의 내용을 입력해보세요.</p>
+                    <div class="input-group">
+                        <label for="inquiry">문의 내용</label>
+                        <textarea id="inquiry" rows="5" placeholder="문의 내용을 입력해주세요."></textarea>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="input-group"&gt;
+    &lt;label for="inquiry"&gt;문의 내용&lt;/label&gt;
+    &lt;textarea id="inquiry" rows="5" placeholder="문의 내용을 입력해주세요."&gt;&lt;/textarea&gt;
+&lt;/div&gt;</code></pre></div></div>
+            </section>
+            <!-- 툴팁 예제 -->
+            <section id="tooltip" class="content-section" data-keywords="툴팁 tooltip 설명 가이드 guide 말풍선 도움말">
+                <h2 class="section-title">💬 툴팁 (Tooltip)</h2>
+                <p class="section-description">
+                    툴팁(Tooltip) 디자인은 사용자가 특정 요소에 마우스를 올리거나(Hover), 포커스를 두었을 때 나타나는 작은 정보 창입니다. 인터페이스를 깔끔하게 유지하면서도 필요한 순간에만 보충 설명을 제공하는 '친절한 가이드' 역할을 합니다.
+                </p>
+                
+                <div class="info-box" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">1. UI 디자인 특징</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>말풍선 형태:</strong> 본문과 구분되도록 주로 작은 화살표(Tail)가 달린 상자 모양으로 디자인됩니다.</li>
+                        <li><strong>시각적 대비:</strong> 배경색과 대비되는 색상(어두운 배경에 흰 글씨 등)을 사용하여 시인성을 높입니다.</li>
+                        <li><strong>간결한 텍스트:</strong> 툴팁은 긴 문장이 아닌, 한눈에 읽히는 짧은 단어나 문구로 구성합니다.</li>
+                        <li><strong>일시적 노출:</strong> 마우스를 떼면 즉시 사라지는 것이 기본이며, 본문 콘텐츠를 가리지 않는 적절한 위치(상, 하, 좌, 우)에 배치됩니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">2. 사용 목적 및 UX 효과</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>공간 효율성:</strong> 화면에 모든 텍스트를 다 적으면 디자인이 지저분해집니다. 중요도가 낮지만 설명이 필요한 부분에 사용하여 화면을 비워둡니다.</li>
+                        <li><strong>아이콘 의미 전달:</strong> 아이콘만으로는 기능을 이해하기 어려운 경우(예: 설정, 휴지통, 물음표 아이콘), 툴팁을 통해 텍스트 설명을 제공합니다.</li>
+                        <li><strong>학습 비용 감소:</strong> 사용자가 기능을 추측하지 않고 즉석에서 정보를 확인하게 하여 서비스 이용의 어려움을 줄여줍니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">3. 디자인 시 고려할 핵심 포인트</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>트리거(Trigger) 명시:</strong> 사용자가 툴팁이 나올 곳이라는 것을 예측할 수 있게 점선 밑줄이나 물음표 아이콘(?) 등을 활용하는 것이 좋습니다.</li>
+                        <li><strong>지연 시간(Delay):</strong> 마우스가 스쳐 지나갈 때마다 툴팁이 번쩍거리며 나타나면 피로감을 줍니다. 아주 짧은 찰나(약 0.3~0.5초)의 지연 시간을 두어 의도적인 호버링에만 반응하게 하는 것이 매너입니다.</li>
+                        <li><strong>모바일 배려:</strong> 모바일에는 '마우스 호버'가 없습니다. 따라서 모바일에서는 터치 시 나타나게 하거나, 툴팁 대신 하단에서 올라오는 '바텀 시트(Bottom Sheet)'로 대체하기도 합니다.</li>
+                        <li><strong>방향 자동 조절:</strong> 화면 끝부분에 있는 요소의 툴팁이 화면 밖으로 잘리지 않도록, 위치에 따라 상단이나 하단으로 자동으로 바뀌어 나타나게 설계해야 합니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">4. 툴팁의 종류</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 0; color: #555; line-height: 1.6;">
+                        <li><strong>일반 툴팁:</strong> 단순 텍스트 정보 제공.</li>
+                        <li><strong>인터랙티브 툴팁:</strong> 툴팁 내부에 링크나 버튼이 포함되어 추가 행동을 유도하는 형태.</li>
+                        <li><strong>온보딩 툴팁:</strong> 처음 접속한 사용자에게 기능 위치를 하나씩 짚어주며 설명하는 투어 가이드 형태.</li>
+                    </ul>
+                </div>
+
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/tooltip.png" alt="툴팁 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <p class="image-caption">툴팁 컴포넌트 예시</p>
+                </div>
+
+                <div class="example-box">
+                    <h3 class="example-title">비밀번호 입력 툴팁</h3>
+                    <p style="margin-bottom: 16px;">아이콘에 마우스를 올려보세요.</p>
+                    <div style="padding: 20px 0;">
+                        비밀번호 입력 <div class="tooltip-wrapper"><span class="help-icon">?</span><div class="tooltip-box">비밀번호는 8자 이상 입력해주세요.</div></div>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="tooltip-wrapper"&gt;
+    &lt;span class="help-icon"&gt;?&lt;/span&gt;
+    &lt;div class="tooltip-box"&gt;비밀번호는 8자 이상 입력해주세요.&lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.help-icon {
+    display: inline-block;
+    width: 20px; height: 20px;
+    background: #eee; border-radius: 50%;
+    text-align: center; line-height: 20px;
+    cursor: pointer; font-size: 12px;
+}
+
+.tooltip-box {
+    display: none; /* 기본 숨김 */
+    position: absolute;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    background: #333; color: #fff;
+    padding: 8px 12px; border-radius: 4px;
+    font-size: 12px; white-space: nowrap;
+    z-index: 10;
+}
+
+/* 말풍선 꼬리 */
+.tooltip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%; left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$('.help-icon').hover(
+    function() { $(this).next('.tooltip-box').stop().fadeIn(200); },
+    function() { $(this).next('.tooltip-box').stop().fadeOut(200); }
+);</code></pre></div></div>
+            </section>
+            <!-- 브레드크럼 예제 -->
+            <section id="breadcrumb" class="content-section" data-keywords="브레드크럼 breadcrumb 경로 내비게이션 navigation 헨젤과그레텔 위치">
+                <h2 class="section-title">📍 브레드크럼 (Breadcrumb)</h2>
+                <p class="section-description">
+                    브레드크럼(Breadcrumb)은 사용자가 서비스 내에서 현재 어디에 위치해 있는지, 그리고 최상위 페이지부터 현재 페이지까지의 경로가 어떻게 되는지 시각적으로 보여주는 보조 내비게이션입니다.<br><br>동화 '헨젤과 그레텔'에서 길을 잃지 않기 위해 떨어뜨린 빵 부스러기에서 이름을 따왔습니다.
+                </p>
+                
+                <div class="info-box" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">1. UI 디자인 특징</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>텍스트 나열:</strong> 보통 메인 &gt; 대분류 &gt; 중분류 &gt; 현재 페이지와 같이 계층 구조를 텍스트로 나열합니다.</li>
+                        <li><strong>구분자(Separator):</strong> 항목 사이에 &gt;, /, | 같은 기호를 넣어 단계가 구분됨을 나타냅니다.</li>
+                        <li><strong>링크 결합:</strong> 현재 페이지를 제외한 이전 경로들은 모두 클릭 가능한 링크로 구성하여 상위 단계로 즉시 이동할 수 있게 합니다.</li>
+                        <li><strong>시각적 위계:</strong> 현재 페이지는 보통 굵게(Bold) 표시하거나 색상을 다르게 하여 경로의 끝임을 명확히 합니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">2. 사용 목적 및 UX 효과</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>현재 위치 파악:</strong> 사용자가 검색이나 외부 링크를 통해 페이지에 바로 진입했을 때, 이 페이지가 사이트의 어느 계층에 속해 있는지 즉시 알 수 있게 합니다.</li>
+                        <li><strong>탐색 경로 단축:</strong> '뒤로 가기' 버튼을 여러 번 누를 필요 없이, 원하는 상위 카테고리로 단 한 번의 클릭만으로 이동할 수 있습니다.</li>
+                        <li><strong>사이트 구조 시각화:</strong> 서비스의 전체적인 카테고리 구조를 사용자에게 학습시키는 효과가 있습니다.</li>
+                        <li><strong>이탈률 감소:</strong> 사용자가 찾는 내용이 현재 페이지에 없을 때, 브레드크럼을 통해 상위 카테고리로 올라가 다른 정보를 찾도록 유도합니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">3. 디자인 시 고려할 핵심 포인트</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>보조적 역할:</strong> 브레드크럼은 메인 메뉴(GNB)를 대신하는 것이 아니라 보조하는 역할입니다. 너무 크거나 화려하게 디자인하지 않고 간결하게 배치합니다.</li>
+                        <li><strong>위치 선정:</strong> 일반적으로 페이지 상단, 제목 바로 위나 메인 내비게이션 바 아래에 배치하는 것이 관례입니다.</li>
+                        <li><strong>이동 경로 vs 계층 구조:</strong> 브레드크럼은 사용자가 실제로 '지나온 길'을 보여주기보다는, 사이트의 '논리적 계층 구조'를 보여주는 것이 훨씬 유용합니다.</li>
+                        <li><strong>현재 페이지의 비활성화:</strong> 현재 머물고 있는 페이지는 클릭할 필요가 없으므로 링크를 걸지 않고 텍스트로만 처리합니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">4. 브레드크럼의 종류</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 0; color: #555; line-height: 1.6;">
+                        <li><strong>위치 기반(Location-based):</strong> 가장 흔한 형태. 사이트의 고정된 계층 구조를 보여줍니다.</li>
+                        <li><strong>속성 기반(Attribute-based):</strong> 이커머스에서 주로 쓰이며, 사용자가 선택한 필터(예: 남성복 &gt; 셔츠 &gt; 블루)를 보여줍니다.</li>
+                        <li><strong>경로 기반(Path-based):</strong> 사용자가 실제로 클릭하며 들어온 순서를 보여주지만, 뒤로 가기 버튼과 기능이 겹쳐 최근에는 잘 사용되지 않습니다.</li>
+                    </ul>
+                </div>
+
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="https://codeit-assets.s3.ap-northeast-2.amazonaws.com/tutorials/temp/breadscrumb.png" alt="브레드크럼 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <p class="image-caption">브레드크럼 컴포넌트 예시</p>
+                </div>
+
+                <div class="example-box">
+                    <h3 class="example-title">브레드크럼 내비게이션</h3>
+                    <p style="margin-bottom: 16px;">각 상위 카테고리를 클릭하면 이동할 수 있습니다.</p>
+                    <div style="padding: 20px 0;">
+                        <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+                            <ol class="breadcrumb-list">
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">홈</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">상품 목록</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">전자제품</a></li>
+                                <li class="breadcrumb-item current" aria-current="page">노트북</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;nav aria-label="Breadcrumb" class="breadcrumb-nav"&gt;
+    &lt;ol class="breadcrumb-list"&gt;
+        &lt;li class="breadcrumb-item"&gt;&lt;a href="/"&gt;홈&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="breadcrumb-item"&gt;&lt;a href="/products"&gt;상품 목록&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="breadcrumb-item"&gt;&lt;a href="/products/electronics"&gt;전자제품&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="breadcrumb-item current" aria-current="page"&gt;노트북&lt;/li&gt;
+    &lt;/ol&gt;
+&lt;/nav&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.breadcrumb-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "&gt;"; /* 구분자 */
+    margin: 0 10px;
+    color: #ccc;
+}
+
+.breadcrumb-item a {
+    text-decoration: none;
+    color: #007AFF;
+    transition: color 0.2s;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-item.current {
+    color: #333;
+    font-weight: bold;
+}</code></pre></div></div>
+            </section>
+            <!-- 인풋 필드 예제 -->
+            <section id="inputfield" class="content-section" data-keywords="인풋 필드 input field 플레이스홀더 placeholder 입력 폼 form">
+                <h2 class="section-title">⌨️ 인풋 필드 & 플레이스홀더</h2>
+                <p class="section-description">
+                    인풋 필드(Input Field)와 플레이스홀더(Placeholder)는 사용자로부터 정보를 입력받는 가장 기본적인 UI 요소입니다. 회원가입, 검색, 로그인 등 서비스의 핵심 전환이 일어나는 지점에서 매우 중요한 역할을 합니다.
+                </p>
+                
+                <div class="info-box" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">1. 인풋 필드 (Input Field)</h3>
+                    <p style="color: #555; margin-bottom: 10px;">사용자가 직접 텍스트 정보를 입력하는 영역입니다.</p>
+                    <p style="font-weight: bold; margin-bottom: 5px; color: #333;">UI 구성 요소:</p>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>라벨(Label):</strong> 필드가 무엇을 입력하는 곳인지 알려주는 텍스트입니다. (예: '아이디', '비밀번호')</li>
+                        <li><strong>컨테이너(Container):</strong> 텍스트가 입력되는 박스 영역입니다.</li>
+                        <li><strong>커서(Cursor):</strong> 입력 준비가 되었음을 알리는 깜빡이는 선입니다.</li>
+                    </ul>
+                    <p style="font-weight: bold; margin-bottom: 5px; color: #333;">상태 디자인(States):</p>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>Normal:</strong> 기본 상태.</li>
+                        <li><strong>Focus:</strong> 마우스로 클릭하거나 탭하여 입력 중인 상태 (테두리 색상 변화 등).</li>
+                        <li><strong>Error:</strong> 잘못된 정보 입력 시 (주로 빨간색 테두리와 에러 메시지 노출).</li>
+                        <li><strong>Disabled:</strong> 입력을 막아둔 비활성화 상태 (보통 회색 배경).</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">2. 플레이스홀더 (Placeholder)</h3>
+                    <p style="color: #555; margin-bottom: 10px;">사용자가 입력을 시작하기 전, 인풋 필드 내부에 연하게 표시되는 힌트 텍스트입니다.</p>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>역할:</strong> 어떤 내용을 입력해야 하는지 예시를 보여주거나(예: 'example@mail.com'), 입력 형식을 안내합니다(예: '하이픈(-) 없이 입력').</li>
+                        <li><strong>특징:</strong> 실제 값이 아니며, 사용자가 한 글자라도 입력을 시작하면 화면에서 사라집니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">3. 디자인 시 고려할 핵심 UX 포인트</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 0; color: #555; line-height: 1.6;">
+                        <li><strong>라벨은 필수입니다:</strong> 플레이스홀더를 라벨 대신 사용하는 경우가 있는데, 이는 위험합니다. 입력을 시작하면 플레이스홀더가 사라지기 때문에 사용자가 "내가 지금 뭘 적고 있었지?"라며 혼란을 느낄 수 있습니다. 라벨은 필드 외부에 항상 보여야 합니다.</li>
+                        <li><strong>명확한 시각적 피드백:</strong> 현재 내가 어느 칸에 글자를 적고 있는지 'Focus' 상태를 확실히 디자인해야 합니다. (예: 테두리를 브랜드 컬러로 강조)</li>
+                        <li><strong>적절한 크기:</strong> 모바일 환경을 고려하여 손가락으로 터치하기 쉽도록 필드의 높이를 충분히(최소 44~48px 이상) 확보해야 합니다.</li>
+                        <li><strong>에러 메시지 배치:</strong> 단순히 테두리만 빨갛게 바꾸는 것보다, 필드 하단에 구체적인 가이드를 함께 적어주는 것이 훨씬 친절한 디자인입니다.</li>
+                        <li><strong>입력에 최적화된 키보드:</strong> 모바일 앱의 경우, 이메일 필드라면 @가 포함된 키보드를 자동으로 띄워주어 수고를 덜어주어야 합니다.</li>
+                    </ul>
+                </div>
+
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="https://static.wikidocs.net/images/page/328701/inputfield.png" alt="인풋 필드 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <p class="image-caption">인풋 필드 및 플레이스홀더 예시</p>
+                </div>
+
+                <div class="example-box">
+                    <h3 class="example-title">이메일 인풋 필드</h3>
+                    <p style="margin-bottom: 16px;">클릭하여 포커스 상태를 확인해보세요.</p>
+                    <div style="padding: 20px 0;">
+                        <div class="input-field-demo">
+                            <label for="user-email-demo">이메일 주소</label>
+                            <input type="email" id="user-email-demo" placeholder="example@gmail.com">
+                            <span class="error-msg">유효한 이메일 형식이 아닙니다.</span>
+                        </div>
+                        <button class="btn btn-outline" style="margin-top:10px; font-size:12px; padding:6px 12px; border:1px solid #ddd; background:#fff; border-radius:4px; cursor:pointer;" onclick="document.querySelector('.input-field-demo').classList.toggle('error')">에러 상태 토글</button>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="input-group"&gt;
+    &lt;label for="user-email"&gt;이메일 주소&lt;/label&gt;
+    &lt;input type="email" id="user-email" placeholder="example@gmail.com"&gt;
+    &lt;span class="error-msg"&gt;유효한 이메일 형식이 아닙니다.&lt;/span&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+input {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none; /* 기본 아웃라인 제거 */
+    transition: border-color 0.3s;
+}
+
+/* 포커스 상태: 사용자가 클릭했을 때 */
+input:focus {
+    border-color: #007AFF;
+}
+
+/* 에러 상태일 때 (클래스 추가 시) */
+.input-group.error input {
+    border-color: #ff4757;
+}
+
+.error-msg {
+    display: none; /* 기본적으로 숨김 */
+    color: #ff4757;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* 에러 클래스가 있을 때 메시지 표시 */
+.input-group.error .error-msg {
+    display: block;
+}</code></pre></div></div>
+            </section>
+            <!-- 피커 예제 -->
+            <section id="picker" class="content-section" data-keywords="피커 picker 날짜 시간 지역 date time dropdown 휠 wheel">
+                <h2 class="section-title">📅 피커 (Picker)</h2>
+                <p class="section-description">
+                    피커(Picker) 디자인은 날짜, 시간, 지역과 같이 정해진 선택지 중 하나를 골라야 할 때 사용하는 UI 컴포넌트입니다. 특히 모바일 환경에서 텍스트를 직접 입력하는 번거로움을 줄여주기 위해 탄생한 디자인 요소입니다.
+                </p>
+                
+                <div class="info-box" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">1. UI 디자인 특징</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>휠(Wheel) 방식:</strong> 마치 원통을 돌리듯 위아래로 스와이프하여 값을 선택하는 방식입니다. (iOS의 기본 설정 앱 등에서 흔히 볼 수 있습니다.)</li>
+                        <li><strong>드롭다운과의 차이점:</strong> 드롭다운은 선택지가 아래로 펼쳐지는 방식인 반면, 피커는 별도의 창(모달)이 뜨거나 바닥에서 올라오는 시트(Bottom Sheet) 형태가 많습니다.</li>
+                        <li><strong>정돈된 위계:</strong> 현재 선택된 값이 중앙에 위치하고, 위아래 값들은 반투명하게 처리하여 '선택' 상태를 시각적으로 강조합니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">2. 주요 종류</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>데이트 피커 (Date Picker):</strong> 달력 형태로 날짜를 선택하거나, 연/월/일 휠을 돌려 선택합니다.</li>
+                        <li><strong>타임 피커 (Time Picker):</strong> 시/분/초를 선택합니다. 오전/오후(AM/PM) 구분자가 포함됩니다.</li>
+                        <li><strong>커스텀 피커:</strong> 키, 몸무게, 지역 선택 등 특정 데이터 세트를 선택할 때 사용합니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">3. 사용 목적 및 UX 효과</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>입력 오류 방지:</strong> "2024-02-30" 같이 존재하지 않는 날짜를 입력하는 실수를 원천적으로 차단합니다.</li>
+                        <li><strong>조작 편의성:</strong> 모바일에서 작은 키보드를 두드리는 것보다 가벼운 스와이프(Swipe) 동작이 훨씬 빠르고 편리합니다.</li>
+                        <li><strong>형식 통일:</strong> 서버에 데이터를 보낼 때 일정한 형식(예: YYYY-MM-DD)으로 전송할 수 있어 데이터 관리가 용이합니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">4. 디자인 시 고려할 핵심 포인트</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 0; color: #555; line-height: 1.6;">
+                        <li><strong>기본값(Default Value) 설정:</strong> 사용자가 가장 많이 선택할 만한 값(예: 오늘 날짜, 현재 시간)을 미리 선택해 두어 조작을 최소화합니다.</li>
+                        <li><strong>확인/취소 버튼:</strong> 선택을 완료하거나 취소할 수 있는 명확한 버튼을 함께 제공해야 합니다.</li>
+                        <li><strong>모바일 네이티브 활용:</strong> 웹 브라우저나 OS가 기본으로 제공하는 피커(Native Picker)를 사용하면 사용자에게 익숙한 경험을 줄 수 있고 개발도 간편합니다.</li>
+                        <li><strong>단계별 선택:</strong> 연도를 선택하면 해당 연도에 맞는 월/일이 업데이트되도록 논리적으로 연결해야 합니다.</li>
+                    </ul>
+                </div>
+
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="https://velog.velcdn.com/images%2Foneook%2Fpost%2Fef1ac81a-1bca-4a05-a8b7-c701d44d457d%2Fdate-picker-ui-element.gif" alt="피커 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <p class="image-caption">피커(데이트 피커) UI 예시</p>
+                </div>
+
+                <div class="example-box">
+                    <h3 class="example-title">날짜 선택 (Date Picker)</h3>
+                    <p style="margin-bottom: 16px;">클릭하여 날짜를 선택해보세요.</p>
+                    <div style="padding: 20px 0;">
+                        <div class="picker-demo-group">
+                            <label for="booking-date">예약 날짜 선택</label>
+                            <input type="date" id="booking-date" name="trip-start" value="2024-04-29" min="2024-01-01" max="2024-12-31">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;div class="picker-group"&gt;
+    &lt;label for="booking-date"&gt;예약 날짜 선택&lt;/label&gt;
+    &lt;!-- 브라우저 기본 데이트 피커 호출 --&gt;
+    &lt;input type="date" id="booking-date" name="trip-start"
+           value="2024-04-29"
+           min="2024-01-01" max="2024-12-31"&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.picker-group {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+}
+
+label {
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* 포커스 시 테두리 강조 */
+input[type="date"]:focus {
+    outline: none;
+    border-color: #007AFF;
+    box-shadow: 0 0 5px rgba(0,122,255,0.2);
+}</code></pre></div></div>
+            </section>
+            <!-- 코치마크 예제 -->
+            <section id="coachmark" class="content-section" data-keywords="코치마크 coach mark 가이드 guide 튜토리얼 tutorial 온보딩 onboarding">
+                <h2 class="section-title">🎓 코치마크 (Coach Mark)</h2>
+                <p class="section-description">
+                    코치마크(Coach Mark) 디자인은 사용자가 앱이나 서비스를 처음 이용할 때, 주요 기능이나 화면 구성을 익힐 수 있도록 화면 위에 반투명한 레이어를 덮어 특정 부분을 강조하고 설명을 덧붙이는 가이드 요소입니다.<br><br>
+                    마치 운동 경기의 코치가 선수에게 작전을 지시하듯, 인터페이스의 사용법을 직접적으로 '코칭'해준다고 해서 붙여진 이름입니다.
+                </p>
+                
+                <div class="info-box" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">1. UI 디자인 특징</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>반투명 오버레이:</strong> 기존 화면 위에 검은색이나 짙은 색의 반투명 배경을 깔아 현재 설명하는 부분 외에는 시선을 차단합니다.</li>
+                        <li><strong>스포트라이트 효과:</strong> 강조해야 할 버튼이나 영역만 구멍을 뚫은 것처럼 밝게 표시하여 시선을 집중시킵니다.</li>
+                        <li><strong>핸드라이팅/아이콘 활용:</strong> 딱딱한 폰트보다는 손글씨 느낌의 폰트나 화살표 아이콘을 사용하여 '친절하게 설명해주는 느낌'을 줍니다.</li>
+                        <li><strong>간결한 카피:</strong> 한 번에 이해할 수 있도록 짧고 명확한 문구를 사용합니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">2. 사용 목적 및 UX 효과</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>신규 사용자 온보딩(Onboarding):</strong> 처음 진입한 사용자가 서비스의 핵심 기능을 빠르게 학습하고 첫 성공 경험을 갖도록 돕습니다.</li>
+                        <li><strong>업데이트 안내:</strong> 기존 사용자가 익숙해진 UI가 변경되었거나 새로운 기능이 추가되었을 때 이를 직관적으로 알립니다.</li>
+                        <li><strong>인지 부하 감소:</strong> 복잡한 매뉴얼을 읽지 않아도 실제 화면을 보며 즉석에서 기능을 배울 수 있습니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">3. 디자인 시 고려할 핵심 포인트</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 15px; color: #555; line-height: 1.6;">
+                        <li><strong>한 번에 하나씩:</strong> 너무 많은 코치마크를 한꺼번에 띄우면 사용자는 피로를 느끼고 바로 '닫기'를 눌러버립니다. 가장 중요한 기능 3~5개 이내로 제한하세요.</li>
+                        <li><strong>언제든 건너뛰기(Skip):</strong> 이미 기능을 아는 사용자나 학습을 원치 않는 사용자를 위해 언제든 가이드를 종료할 수 있는 '건너뛰기'나 '다시 보지 않기' 버튼을 명확히 제공해야 합니다.</li>
+                        <li><strong>맥락에 맞는 실행:</strong> 앱을 켜자마자 띄우는 것이 아니라, 사용자가 해당 기능이 있는 화면에 도달했을 때 타이밍에 맞춰 보여주는 것이 좋습니다.</li>
+                        <li><strong>한 번만 보여주기:</strong> 코치마크는 학습을 위한 것이므로, 사용자가 한 번 확인했다면 다시 나타나지 않도록 설계해야 합니다.</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 10px; font-size: 16px; color: #007AFF;">4. 코치마크 vs 툴팁 vs 가이드 투어</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 0; color: #555; line-height: 1.6;">
+                        <li><strong>툴팁:</strong> 사용자가 궁금해서 아이콘에 마우스를 올릴 때 나타나는 수동적인 정보.</li>
+                        <li><strong>코치마크:</strong> 시스템이 먼저 사용자에게 보여주는 능동적이고 일시적인 화면 전체 가이드.</li>
+                        <li><strong>가이드 투어:</strong> 여러 개의 코치마크나 툴팁이 순차적으로 나타나며 단계별로 기능을 설명하는 과정.</li>
+                    </ul>
+                </div>
+
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdna%2Fmirfd%2FbtrRrobdUie%2FAAAAAAAAAAAAAAAAAAAAAH9HtAbLft-T_H8x9UcjKdSaapHDYMXvizDugD9d7IC1%2Fimg.png%3Fcredential%3DyqXZFxpELC7KVnFOS48ylbz2pIh7yKj8%26expires%3D1777561199%26allow_ip%3D%26allow_referer%3D%26signature%3DnEXDHHTC%252B5BvukPexe%252B58MmFw48%253D" alt="코치마크 예시" onerror="this.style.display='none'" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <p class="image-caption">코치마크 UI 예시</p>
+                </div>
+
+                <div class="example-box">
+                    <h3 class="example-title">코치마크 데모</h3>
+                    <p style="margin-bottom: 16px;">아래 버튼을 클릭하여 화면 위 코치마크를 띄워보세요.</p>
+                    <div style="padding: 20px 0; position: relative; min-height: 150px; background: #fff; border: 1px solid #eee; border-radius: 8px;">
+                        <!-- 타겟 버튼 -->
+                        <button id="coachTargetBtn" class="btn btn-primary" style="margin-left: 20px;">새 메시지 보내기</button>
+                        
+                        <!-- 코치마크 레이어 (기본 숨김) -->
+                        <div id="demoCoachMark" class="coach-mark-overlay" style="display: none; position: absolute;">
+                            <div class="spotlight"></div>
+                            <div class="coach-content">
+                                <p style="margin-bottom: 15px; font-weight: bold; font-size: 16px;">이 버튼을 눌러 새 메시지를 보내보세요! 🚀</p>
+                                <button id="closeCoachBtn" class="btn btn-outline" style="background: transparent; color: #fff; border-color: #fff;">알겠어요</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">HTML</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>&lt;!-- 코치마크 레이어 --&gt;
+&lt;div class="coach-mark-overlay"&gt;
+    &lt;!-- 스포트라이트가 비춰질 영역 (위치는 JS로 조절) --&gt;
+    &lt;div class="spotlight"&gt;&lt;/div&gt;
+    
+    &lt;!-- 설명 텍스트와 화살표 --&gt;
+    &lt;div class="coach-content"&gt;
+        &lt;p&gt;이 버튼을 눌러 새 메시지를 보내보세요!&lt;/p&gt;
+        &lt;button class="close-coach"&gt;알겠어요&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">CSS</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>.coach-mark-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* 반투명 배경 */
+    z-index: 9999;
+}
+
+.spotlight {
+    position: absolute;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7); /* 구멍 뚫린 효과 */
+    top: 20px; left: 20px; /* 실제 버튼 위치에 맞춰 조정 */
+}
+
+.coach-content {
+    position: absolute;
+    top: 100px; left: 50px;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+}</code></pre></div></div>
+
+                <div class="code-block"><div class="code-header"><span class="code-language">jQuery</span><button class="code-copy-btn">복사</button></div><div class="code-content"><pre><code>$('#coachTargetBtn').click(function() {
+    $('#demoCoachMark').fadeIn();
+});
+$('#closeCoachBtn').click(function() {
+    $('#demoCoachMark').fadeOut();
+});</code></pre></div></div>
+            </section>
+            
+            <!-- 팁 -->
+            <section class="content-section">
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 학습 팁</div>
+                    <div class="prompt-content">
+                        각 UI 컴포넌트는 <strong>HTML 구조</strong>, <strong>CSS 스타일</strong>, <strong>jQuery 코드</strong> 순서로 학습할 수 있습니다.
+                        실제로 코드를 작성해보면서 실력을 키워보세요!
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 관련 페이지 -->
+            <section class="content-section">
+                <h2 class="section-title">🔗 관련 페이지</h2>
+                <p class="section-description">
+                    UI 컴포넌트와 관련된 기술을 함께 학습해보세요.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                    <a href="jquery.html" class="btn" style="text-align: center; padding: 12px; background: #f5f5f5; border-radius: 8px; text-decoration: none; color: #333;">
+                        🔷 jQuery
+                    </a>
+                    <a href="css.html" class="btn" style="text-align: center; padding: 12px; background: #f5f5f5; border-radius: 8px; text-decoration: none; color: #333;">
+                        🎨 CSS
+                    </a>
+                    <a href="javascript.html" class="btn" style="text-align: center; padding: 12px; background: #f5f5f5; border-radius: 8px; text-decoration: none; color: #333;">
+                        ⚡ JavaScript
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- 알럿 컨테이너 (오른쪽 상단 배치) -->
+    <div id="alertContainer" class="alert-container">
+        <div class="alert-box success">
+            <span class="icon">✔</span>
+            <span class="message">데이터가 성공적으로 저장되었습니다.</span>
+            <span class="close-btn">&times;</span>
+        </div>
+    </div>
+    
+    <!-- 토스트가 담길 컨테이너 -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- 바텀시트 구조 -->
+    <div class="sheet-overlay" id="sheetOverlay">
+        <div class="bottom-sheet" id="bottomSheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-content">
+                <h3>공유하기</h3>
+                <ul class="share-list">
+                    <li>카카오톡</li>
+                    <li>링크 복사</li>
+                    <li>이메일 전송</li>
+                </ul>
+                <button class="close-sheet">닫기</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../assets/js/common.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // 팝업 기능
+        $('#openPopup').on('click', function() {
+            var url = "../popup.html";
+            var name = "TermsPopup";
+            
+            var width = 500;
+            var height = 600;
+            var left = (window.screen.width / 2) - (width / 2);
+            var top = (window.screen.height / 2) - (height / 2);
+            
+            var options = "width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + ", resizable=no, scrollbars=yes, status=no, toolbar=no";
+            
+            window.open(url, name, options);
+        });
+        
+        // 검색 기능
+        $('.search-box input').on('keyup', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            
+            $('.content-section').each(function() {
+                var keywords = $(this).data('keywords');
+                var sectionText = $(this).text().toLowerCase();
+                
+                if (keywords) {
+                    var keywordList = keywords.toLowerCase().split(' ');
+                    var hasKeyword = keywordList.some(function(keyword) {
+                        return keyword.includes(searchTerm) || searchTerm.includes(keyword);
+                    });
+                    
+                    if (hasKeyword || sectionText.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                } else if (sectionText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    if (!$(this).data('keywords')) {
+                        $(this).show();
+                    }
+                }
+            });
+            
+            if (searchTerm === '') {
+                $('.content-section').show();
+            }
+        });
+        
+        // 알럿 기능
+        $('#triggerAlert').on('click', function() {
+            var $alert = $('.alert-box');
+
+            $alert.css({ 'right': '-100px', 'opacity': '0', 'display': 'flex' })
+                  .animate({ 'right': '0', 'opacity': '1' }, 300);
+
+            setTimeout(function() {
+                $alert.fadeOut(300);
+            }, 3000);
+        });
+
+        $('.close-btn').on('click', function() {
+            $(this).parent().fadeOut(200);
+        });
+        
+        // 토스트 기능
+        $('#showToast').on('click', function() {
+            var $toast = $('<div class="toast-item">성공적으로 처리되었습니다!</div>');
+            
+            $('#toastContainer').append($toast);
+            $toast.fadeIn(400).delay(2000).fadeOut(400, function() {
+                $(this).remove();
+            });
+        });
+        
+        // 바텀시트 기능
+        $('#openSheet').on('click', function() {
+            $('#sheetOverlay').fadeIn(200);
+            $('#bottomSheet').addClass('active');
+        });
+
+        function closeSheet() {
+            $('#bottomSheet').removeClass('active');
+            $('#sheetOverlay').fadeOut(300);
+        }
+
+        $('.close-sheet, #sheetOverlay').on('click', function(e) {
+            if ($(e.target).is('#sheetOverlay') || $(e.target).is('.close-sheet')) {
+                closeSheet();
+            }
+        });
+        
+        // 슬라이더 기능
+        $('#rangeSlider').on('input', function() {
+            var val = $(this).val();
+            $('#sliderValue').text(val);
+        });
+
+        // 이메일 유효성 검사
+        $('#userEmail').on('blur', function() {
+            var email = $(this).val();
+            var emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailReg.test(email) && email !== "") {
+                $(this).parent().addClass('error');
+                $(this).siblings('.helper-text').text('유효하지 않은 이메일 형식입니다.');
+            } else {
+                $(this).parent().removeClass('error');
+                $(this).siblings('.helper-text').text('정확한 이메일 형식을 입력해주세요.');
+            }
+        });
+
+        // 전체 선택 체크박스 기능
+        $('#checkAll').on('change', function() {
+            $('.sub-check').prop('checked', $(this).prop('checked'));
+        });
+
+        // 개별 선택 클릭 시 전체 선택 상태 동기화
+        $('.sub-check').on('change', function() {
+            var allCount = $('.sub-check').length;
+            var checkedCount = $('.sub-check:checked').length;
+
+            if (allCount === checkedCount) {
+                $('#checkAll').prop('checked', true);
+            } else {
+                $('#checkAll').prop('checked', false);
+            }
+        });
+
+        // 탭 기능
+        $('.tab-link').on('click', function() {
+            var tabId = $(this).attr('data-tab');
+
+            // 모든 탭과 콘텐츠에서 active 클래스 제거
+            $('.tab-link').removeClass('active');
+            $('.tab-content').removeClass('active');
+
+            // 클릭한 탭과 연결된 콘텐츠 활성화
+            $(this).addClass('active');
+            $("#" + tabId).addClass('active');
+        });
+
+        // 아코디언 기능
+        $('.accordion-header').click(function() {
+            // 이미 열려있는 상태라면 닫기
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active').next('.accordion-panel').slideUp();
+            } else {
+                // 다른 열려있는 패널들을 모두 닫고 현재 것만 열기
+                $('.accordion-header').removeClass('active');
+                $('.accordion-panel').slideUp();
+
+                $(this).addClass('active').next('.accordion-panel').slideDown();
+            }
+        });
+
+        // 카드 찜하기 기능
+        $('.wish-btn').click(function() {
+            $(this).toggleClass('active');
+        });
+
+        // CTA 버튼 기능
+        $('#mainCtaBtn').click(function() {
+            alert("성공적으로 신청되었습니다! 웰컴 메일을 확인해주세요.");
+        });
+
+        // 캐러셀 기능
+        var carouselIndex = 0;
+        var carouselSlideCount = $('.carousel-container .slide').length;
+
+        function showCarouselSlide(index) {
+            $('.carousel-container .slide').removeClass('active').hide();
+            $('.carousel-container .dot').removeClass('active');
+            
+            $('.carousel-container .slide').eq(index).fadeIn(500).addClass('active');
+            $('.carousel-container .dot').eq(index).addClass('active');
+        }
+
+        $('.carousel-container .next-btn').click(function() {
+            carouselIndex = (carouselIndex + 1) % carouselSlideCount;
+            showCarouselSlide(carouselIndex);
+        });
+
+        $('.carousel-container .prev-btn').click(function() {
+            carouselIndex = (carouselIndex - 1 + carouselSlideCount) % carouselSlideCount;
+            showCarouselSlide(carouselIndex);
+        });
+
+        $('.carousel-container .dot').click(function() {
+            carouselIndex = $(this).index();
+            showCarouselSlide(carouselIndex);
+        });
+
+        // 라이트박스 기능
+        $('.lightbox-trigger').click(function() {
+            var fullImgUrl = $(this).attr('data-full');
+            var altText = $(this).attr('alt');
+            
+            $('#lightbox-img').attr('src', fullImgUrl);
+            $('#caption').text(altText);
+            $('.lightbox-overlay').fadeIn(300).css('display', 'flex');
+            $('body').css('overflow', 'hidden');
+        });
+
+        $('.close-btn, .lightbox-overlay').click(function(e) {
+            if (e.target !== e.currentTarget && e.target.className !== 'close-btn') return;
+            $('.lightbox-overlay').fadeOut(300);
+            $('body').css('overflow', 'auto');
+        });
+
+        // 갤러리 필터 기능
+        $('.filter-btn').click(function() {
+            var value = $(this).attr('data-filter');
+            
+            $('.filter-btn').removeClass('active');
+            $(this).addClass('active');
+
+            if(value == "all") {
+                $('.gallery-item').fadeIn(400);
+            } else {
+                $('.gallery-item').not('.' + value).fadeOut(200);
+                $('.gallery-item').filter('.' + value).fadeIn(400);
+            }
+        });
+        // 툴팁 기능
+        $('.help-icon').hover(
+            function() { $(this).next('.tooltip-box').stop().fadeIn(200); },
+            function() { $(this).next('.tooltip-box').stop().fadeOut(200); }
+        );
+        // 코치마크 데모 기능
+        $('#coachTargetBtn').click(function() {
+            $('#demoCoachMark').fadeIn(300);
+        });
+        $('#closeCoachBtn').click(function() {
+            $('#demoCoachMark').fadeOut(300);
+        });
+    });
+    </script>
+</body>
+</html>

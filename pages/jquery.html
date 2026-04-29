@@ -1,0 +1,554 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery 학습 - UI/UX Learning</title>
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- jQuery 라이브러리 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 좌측 사이드바 (공통 메뉴) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo">
+                    <span>UI/UX</span> Learning
+                </a>
+                <p class="logo-sub">웹 프론트엔드 학습 사이트</p>
+            </div>
+            
+            <!-- 검색창 -->
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="검색어를 입력하세요...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            
+            <!-- 네비게이션 메뉴 -->
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="../index.html">
+                            <span>🏠</span> 메인 페이지
+                        </a>
+                    </li>
+                    <li>
+                        <a href="html.html">
+                            <span>📄</span> HTML
+                        </a>
+                    </li>
+                    <li>
+                        <a href="css.html">
+                            <span>🎨</span> CSS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript.html">
+                            <span>⚡</span> JavaScript
+                        </a>
+                    </li>
+                    <li>
+                        <a href="jquery.html">
+                            <span>🔷</span> jQuery
+                        </a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="javascript:void(0);" class="submenu-toggle">
+                            <div><span>🎨</span> UI 컴포넌트</div>
+                            <span class="arrow">▼</span>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="ui-components.html#popup">팝업 (Popup)</a></li>
+                            <li><a href="ui-components.html#alert">알럿 (Alert)</a></li>
+                            <li><a href="ui-components.html#toast">토스트 (Toast)</a></li>
+                            <li><a href="ui-components.html#bottomsheet">바텀시트 (Bottom Sheet)</a></li>
+                            <li><a href="ui-components.html#slider">슬라이더 (Slider)</a></li>
+                            <li><a href="ui-components.html#textfield">텍스트 필드 (Text Field)</a></li>
+                            <li><a href="ui-components.html#checkbox-radio">체크박스 & 라디오</a></li>
+                            <li><a href="ui-components.html#dropdown">드롭다운 (Dropdown)</a></li>
+                            <li><a href="ui-components.html#toggle">토글 스위치 (Toggle)</a></li>
+                            <li><a href="ui-components.html#tab">탭 (Tab)</a></li>
+                            <li><a href="ui-components.html#accordion">아코디언 (Accordion)</a></li>
+                            <li><a href="ui-components.html#card">카드 (Card)</a></li>
+                            <li><a href="ui-components.html#carousel">캐러셀 (Carousel)</a></li>
+                            <li><a href="ui-components.html#lightbox">라이트박스 (Lightbox)</a></li>
+                            <li><a href="ui-components.html#gallery">갤러리 (Gallery)</a></li>
+                            <li><a href="ui-components.html#textarea">텍스트 영역 (Textarea)</a></li>
+                            <li><a href="ui-components.html#tooltip">툴팁 (Tooltip)</a></li>
+                            <li><a href="ui-components.html#breadcrumb">브레드크럼 (Breadcrumb)</a></li>
+                            <li><a href="ui-components.html#inputfield">인풋 필드 (Input Field)</a></li>
+                            <li><a href="ui-components.html#picker">피커 (Picker)</a></li>
+                            <li><a href="ui-components.html#coachmark">코치마크 (Coach Mark)</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>© 2026 UI/UX Learning</p>
+                <p>웹 프론트엔드 기술을 배워보세요</p>
+            </div>
+        </aside>
+        
+        <!-- 메인 콘텐츠 영역 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">jQuery 기초</h1>
+                <p class="page-description">JavaScript 라이브러리를 활용하여 효율적으로 웹 개발하는 방법을 배워보세요.</p>
+            </div>
+            
+            <!-- jQuery란? -->
+            <section class="content-section">
+                <h2 class="section-title">jQuery란?</h2>
+                <p class="section-description">
+                    jQuery는 JavaScript를 더 쉽게 사용할 수 있도록 만들어진 라이브러리입니다.
+                    DOM 조작, 이벤트 처리, 애니메이션 등을 간결한 문법으로 구현할 수 있습니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/jquery-logo.png" alt="jQuery 로고" onerror="this.style.display='none'">
+                    <p class="image-caption">jQuery 로고</p>
+                </div>
+                
+                <!-- 프롬프트/설명 -->
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 알림</div>
+                    <div class="prompt-content">
+                        jQuery는 <code>$</code> 기호로 시작합니다. 이는 jQuery 객체에 접근하는Shortcut입니다.
+                        jQuery를 사용하면 일반 JavaScript보다 적은 코드로 더 많은 기능을 구현할 수 있습니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">JavaScript (jQuery)</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">// jQuery로 요소 선택</span>
+$(<span class="string">'.my-class'</span>)
+
+<span class="comment">// 일반 JavaScript와 비교</span>
+<span class="comment">// document.querySelector('.my-class')</span>
+<span class="comment">// ↓ jQuery로 간단하게</span>
+$(<span class="string">'.my-class'</span>)
+
+<span class="comment">// 요소 숨기기</span>
+$(<span class="string">'.box'</span>).hide();
+
+<span class="comment">// 요소 표시</span>
+$(<span class="string">'.box'</span>).show();
+
+<span class="comment">// 애니메이션과 함께</span>
+$(<span class="string">'.box'</span>).slideUp(<span class="value">500</span>);</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 선택자 -->
+            <section class="content-section">
+                <h2 class="section-title">jQuery 선택자</h2>
+                <p class="section-description">
+                    jQuery는 CSS 선택자뿐만 아니라独自の 선택자도 제공합니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/jquery-selectors.png" alt="jQuery 선택자" onerror="this.style.display='none'">
+                    <p class="image-caption">jQuery 선택자</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box warning">
+                    <div class="prompt-title">⚠️ 주의사항</div>
+                    <div class="prompt-content">
+                        jQuery 선택자는 항상 <code>$()</code> 또는 <code>jQuery()</code>로 감싸야 합니다.
+                        선택자는 문자열 형태로 작성합니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">jQuery</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">// 태그 선택자</span>
+$(<span class="string">'p'</span>)           <span class="comment">// 모든 p 요소</span>
+$(<span class="string">'div'</span>)          <span class="comment">// 모든 div 요소</span>
+
+<span class="comment">// 클래스 선택자</span>
+$(<span class="string">'.intro'</span>)       <span class="comment">// .intro 클래스</span>
+
+<span class="comment">// ID 선택자</span>
+$(<span class="string">'#header'</span>)      <span class="comment">// #header 아이디</span>
+
+<span class="comment">// 속성 선택자</span>
+$(<span class="string">'[href]'</span>)       <span class="comment">// href 속성이 있는 요소</span>
+$(<span class="string">"a[href*='example']"</span>) <span class="comment">// href에 example이 포함된 링크</span>
+
+<span class="comment">// 필터 선택자</span>
+$(<span class="string">'li:first'</span>)     <span class="comment">// 첫 번째 li</span>
+$(<span class="string">'li:last'</span>)      <span class="comment">// 마지막 li</span>
+$(<span class="string">'li:odd'</span>)       <span class="comment">// 홀수 번째 li (0부터 시작)</span>
+$(<span class="string">'li:even'</span>)      <span class="comment">// 짝수 번째 li</span>
+$(<span class="string">'li:eq(2)'</span>)     <span class="comment">// 3번째 li (인덱스 2)</span></code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 이벤트 처리 -->
+            <section class="content-section">
+                <h2 class="section-title">이벤트 처리</h2>
+                <p class="section-description">
+                    jQuery로 쉽게 이벤트 처리를 구현할 수 있습니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/jquery-events.png" alt="jQuery 이벤트" onerror="this.style.display='none'">
+                    <p class="image-caption">jQuery 이벤트</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box success">
+                    <div class="prompt-title">✅ 팁</div>
+                    <div class="prompt-content">
+                        <code>.on()</code> 메서드를 사용하면 여러 이벤트를 동시에 바인딩하거나,
+                        동적으로 추가된 요소에도 이벤트를 적용할 수 있습니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">jQuery</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">// 클릭 이벤트</span>
+$(<span class="string">'.btn'</span>).click(<span class="keyword">function</span>() {
+    <span class="function">alert</span>(<span class="string">"버튼 클릭!"</span>);
+});
+
+<span class="comment">// 더블 클릭</span>
+$(<span class="string">'.box'</span>).dblclick(<span class="keyword">function</span>() {
+    $(<span class="keyword">this</span>).hide();
+});
+
+<span class="comment">// 마우스 호버</span>
+$(<span class="string">'.menu-item'</span>).hover(
+    <span class="keyword">function</span>() { <span class="comment">// 마우스 들어올 때</span>
+        $(<span class="keyword">this</span>).addClass(<span class="string">'active'</span>);
+    },
+    <span class="keyword">function</span>() { <span class="comment">// 마우스 나갈 때</span>
+        $(this).removeClass('active');
+    }
+);
+
+<span class="comment">// 키보드 이벤트</span>
+$(<span class="string">'input'</span>).keyup(<span class="keyword">function</span>(e) {
+    <span class="function">console</span>.<span class="function">log</span>(e.key);
+});
+
+<span class="comment">// on() 메서드로 여러 이벤트</span>
+$(<span class="string">'.item'</span>).on(<span class="string">'click mouseenter'</span>, <span class="keyword">function</span>() {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"이벤트 발생!"</span>);
+});</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 애니메이션 -->
+            <section class="content-section">
+                <h2 class="section-title">애니메이션 효과</h2>
+                <p class="section-description">
+                    jQuery의 애니메이션 메서드로 부드러운 화면 전환을 구현할 수 있습니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/jquery-animate.png" alt="jQuery 애니메이션" onerror="this.style.display='none'">
+                    <p class="image-caption">jQuery 애니메이션</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 알림</div>
+                    <div class="prompt-content">
+                        애니메이션 메서드 뒤에 콜백 함수를 추가하면 애니메이션 완료 후 실행할 코드를 지정할 수 있습니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">jQuery</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">// 숨기기/표시</span>
+$(<span class="string">'.box'</span>).hide(<span class="value">500</span>);    <span class="comment">// 0.5초 동안 숨기기</span>
+$(<span class="string">'.box'</span>).show(<span class="value">500</span>);    <span class="comment">// 0.5초 동안 표시</span>
+$(<span class="string">'.box'</span>).toggle();      <span class="comment">// 전환 (숨김↔표시)</span>
+
+<span class="comment">// 슬라이드 효과</span>
+$(<span class="string">'.box'</span>).slideUp(<span class="value">300</span>);   <span class="comment">// 위로 접히며 숨기기</span>
+$(<span class="string">'.box'</span>).slideDown(<span class="value">300</span>); <span class="comment">// 아래로 펴지면서 표시</span>
+$(<span class="string">'.box'</span>).slideToggle(); <span class="comment">// 전환</span>
+
+<span class="comment">// 페이드 효과</span>
+$(<span class="string">'.box'</span>).fadeOut(<span class="value">300</span>);  <span class="comment">// 서서히 사라짐</span>
+$(<span class="string">'.box'</span>).fadeIn(<span class="value">300</span>);   <span class="comment">// 서서히 나타남</span>
+$(<span class="string">'.box'</span>).fadeToggle(); <span class="comment">// 전환</span>
+
+<span class="comment">// 사용자 정의 애니메이션</span>
+$(<span class="string">'.box'</span>).animate({
+    <span class="attr">opacity</span>: <span class="value">0.5</span>,
+    <span class="attr">left</span>: <span class="value">+=50</span>,
+    <span class="attr">fontSize</span>: <span class="value">"24px"</span>
+}, <span class="value">1000</span>, <span class="keyword">function</span>() {
+    <span class="comment">// 애니메이션 완료 후 실행</span>
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"애니메이션 완료!"</span>);
+});</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- AJAX -->
+            <section class="content-section">
+                <h2 class="section-title">AJAX 통신</h2>
+                <p class="section-description">
+                    jQuery로 간단하게 AJAX 통신을 구현할 수 있습니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/jquery-ajax.png" alt="jQuery AJAX" onerror="this.style.display='none'">
+                    <p class="image-caption">AJAX 통신</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box success">
+                    <div class="prompt-title">✅ 팁</div>
+                    <div class="prompt-content">
+                        <code>$.ajax()</code>는 가장 기본적인 AJAX 메서드입니다.
+                        <code>$.get()</code>, <code>$.post()</code>, <code>$.getJSON()</code> 등 간단한 메서드도 있습니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">jQuery</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">// GET 요청</span>
+$.<span class="function">get</span>(<span class="string">'/api/data'</span>, <span class="keyword">function</span>(response) {
+    <span class="function">console</span>.<span class="function">log</span>(response);
+});
+
+<span class="comment">// POST 요청</span>
+$.<span class="function">post</span>(<span class="string">'/api/submit'</span>, {
+    <span class="attr">name</span>: <span class="string">"홍길동"</span>,
+    <span class="attr">email</span>: <span class="string">"test@example.com"</span>
+}, <span class="keyword">function</span>(response) {
+    <span class="function">console</span>.<span class="function">log</span>(response);
+});
+
+<span class="comment">// AJAX 기본 문법</span>
+$.<span class="function">ajax</span>({
+    <span class="attr">url</span>: <span class="string">'/api/data'</span>,
+    <span class="attr">method</span>: <span class="string">'GET'</span>,
+    <span class="attr">dataType</span>: <span class="string">'json'</span>,
+    <span class="attr">success</span>: <span class="keyword">function</span>(data) {
+        <span class="function">console</span>.<span class="function">log</span>(data);
+    },
+    <span class="attr">error</span>: <span class="keyword">function</span>(xhr, status, error) {
+        <span class="function">console</span>.<span class="function">log</span>(<span class="string">"에러 발생:"</span>, error);
+    }
+});</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 연습 문제 -->
+            <section class="content-section">
+                <h2 class="section-title">연습 문제</h2>
+                <p class="section-description">
+                    이제 배운 내용을 바탕으로 연습 문제를 풀어보세요.
+                </p>
+                
+                <div class="example-box">
+                    <h3 class="example-title">문제: 아코디언 메뉴 만들기</h3>
+                    <p>클릭하면 내용이 토글되는 아코디언 메뉴를 만들어보세요:</p>
+                    <ul class="content-list">
+                        <li>제목을 클릭하면 해당 내용 표시/숨김</li>
+                        <li>다른 제목 클릭 시 기존에 열린 메뉴는 닫기</li>
+                        <li>슬라이드 애니메이션 효과 적용</li>
+                    </ul>
+                </div>
+                
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 도움말</div>
+                    <div class="prompt-content">
+                        <code>slideToggle()</code>, <code>click()</code>, <code>siblings()</code>를 활용해보세요.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 모달 창 -->
+            <section class="content-section">
+                <h2 class="section-title">모달 창 (Modal)</h2>
+                <p class="section-description">
+                    모달은 사용자의 주의를 끌거나 중요한 정보를 전달할 때 사용하는 팝업 창입니다.
+                    jQuery를 사용하면 간단하게 모달을 구현할 수 있습니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/eB27/image/XOeMdT_i5sNausv5EyNHoaHLCS0.png" alt="모달 창 예시">
+                    <p class="image-caption">모달 창 구조</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box success">
+                    <div class="prompt-title">✅ 핵심 포인트</div>
+                    <div class="prompt-content">
+                        <code>fadeIn()</code>과 <code>fadeOut()</code>을 사용하여 부드러운 애니메이션 효과를 줄 수 있습니다.
+                        <code>is()</code> 메서드를 사용하여 클릭한 요소가 배경인지 확인할 수 있습니다.
+                    </div>
+                </div>
+                
+                <!-- HTML 코드 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">HTML</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">&lt;!-- 열기 버튼 --&gt;</span>
+&lt;<span class="tag">button</span> <span class="attr">class</span>=<span class="string">"open-btn"</span>&gt;프로필 편집&lt;/<span class="tag">button</span>&gt;
+
+<span class="comment">&lt;!-- 모달 구조 --&gt;</span>
+&lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"modal-wrapper"</span>&gt;
+    &lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"modal-box"</span>&gt;
+        &lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"modal-header"</span>&gt;
+            &lt;<span class="tag">h2</span>&gt;프로필 설정&lt;/<span class="tag">h2</span>&gt;
+            &lt;<span class="tag">span</span> <span class="attr">class</span>=<span class="string">"close-icon"</span>&gt;&amp;times;&lt;/<span class="tag">span</span>&gt;
+        &lt;/<span class="tag">div</span>&gt;
+        &lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"modal-body"</span>&gt;
+            &lt;<span class="tag">p</span>&gt;변경사항을 저장하시겠습니까?&lt;/<span class="tag">p</span>&gt;
+            &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">placeholder</span>=<span class="string">"닉네임을 입력하세요"</span>&gt;
+        &lt;/<span class="tag">div</span>&gt;
+        &lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"modal-footer"</span>&gt;
+            &lt;<span class="tag">button</span> <span class="attr">class</span>=<span class="string">"close-btn"</span>&gt;취소&lt;/<span class="tag">button</span>&gt;
+            &lt;<span class="tag">button</span> <span class="attr">class</span>=<span class="string">"save-btn"</span>&gt;저장하기&lt;/<span class="tag">button</span>&gt;
+        &lt;/<span class="tag">div</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+&lt;/<span class="tag">div</span>&gt;</code></pre>
+                    </div>
+                </div>
+                
+                <!-- CSS 코드 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">CSS</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">/* 전체를 덮는 배경 */</span>
+.<span class="attr">modal-wrapper</span> {
+    <span class="attr">display</span>: none;
+    <span class="attr">position</span>: fixed;
+    <span class="attr">top</span>: <span class="value">0</span>; <span class="attr">left</span>: <span class="value">0</span>;
+    <span class="attr">width</span>: <span class="value">100%</span>; <span class="attr">height</span>: <span class="value">100%</span>;
+    <span class="attr">background</span>: <span class="function">rgba</span>(<span class="value">0</span>, <span class="value">0</span>, <span class="value">0</span>, <span class="value">0.6</span>);
+    <span class="attr">z-index</span>: <span class="value">9999</span>;
+}
+
+<span class="comment">/* 중앙에 위치하는 박스 */</span>
+.<span class="attr">modal-box</span> {
+    <span class="attr">position</span>: absolute;
+    <span class="attr">top</span>: <span class="value">50%</span>; <span class="attr">left</span>: <span class="value">50%</span>;
+    <span class="attr">transform</span>: <span class="function">translate</span>(<span class="value">-50%</span>, <span class="value">-50%</span>);
+    <span class="attr">background</span>: <span class="value">#fff</span>;
+    <span class="attr">width</span>: <span class="value">400px</span>;
+    <span class="attr">border-radius</span>: <span class="value">12px</span>;
+    <span class="attr">overflow</span>: hidden;
+    <span class="attr">animation</span>: slideDown <span class="value">0.3s</span> ease-out;
+}
+
+<span class="keyword">@keyframes</span> slideDown {
+    <span class="attr">from</span> { <span class="attr">transform</span>: <span class="function">translate</span>(<span class="value">-50%</span>, <span class="value">-70%</span>); <span class="attr">opacity</span>: <span class="value">0</span>; }
+    <span class="attr">to</span> { <span class="attr">transform</span>: <span class="function">translate</span>(<span class="value">-50%</span>, <span class="value">-50%</span>); <span class="attr">opacity</span>: <span class="value">1</span>; }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- jQuery 코드 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">jQuery</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code>$(<span class="function">document</span>).<span class="function">ready</span>(<span class="keyword">function</span>() {
+    
+    <span class="comment">// 모달 열기</span>
+    $(<span class="string">'.open-btn'</span>).<span class="function">click</span>(<span class="keyword">function</span>() {
+        $(<span class="string">'.modal-wrapper'</span>).<span class="function">fadeIn</span>(<span class="value">200</span>);
+    });
+
+    <span class="comment">// 모달 닫기 (X 버튼, 취소 버튼)</span>
+    $(<span class="string">'.close-icon, .close-btn'</span>).<span class="function">click</span>(<span class="keyword">function</span>() {
+        $(<span class="string">'.modal-wrapper'</span>).<span class="function">fadeOut</span>(<span class="value">200</span>);
+    });
+
+    <span class="comment">// 배경 클릭 시 닫기 (영역 판별)</span>
+    $(<span class="string">'.modal-wrapper'</span>).<span class="function">click</span>(<span class="keyword">function</span>(e) {
+        <span class="keyword">if</span> ($(e.target).<span class="function">is</span>(<span class="string">'.modal-wrapper'</span>)) {
+            $(<span class="keyword">this</span>).<span class="function">fadeOut</span>(<span class="value">200</span>);
+        }
+    });
+    
+    <span class="comment">// 저장 버튼 클릭 시</span>
+    $(<span class="string">'.save-btn'</span>).<span class="function">click</span>(<span class="keyword">function</span>() {
+        <span class="keyword">const</span> nickname = $(<span class="string">'input'</span>).<span class="function">val</span>();
+        <span class="function">alert</span>(<span class="string">"저장되었습니다: "</span> + nickname);
+        $(<span class="string">'.modal-wrapper'</span>).<span class="function">fadeOut</span>(<span class="value">200</span>);
+    });
+});</code></pre>
+                    </div>
+                </div>
+                
+                <!-- 실습 예제 -->
+                <div class="example-box">
+                    <h3 class="example-title">🎯 실습: 확인 대화상자 만들기</h3>
+                    <p>삭제 확인 모달을 만들어보세요:</p>
+                    <ul class="content-list">
+                        <li>"삭제" 버튼을 클릭하면 모달이 열림</li>
+                        <li>"확인" 클릭 시 "삭제되었습니다" 알림</li>
+                        <li>"취소" 클릭 시 모달 닫힘</li>
+                        <li>배경 클릭 시에도 모달이 닫히도록 구현</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="../assets/js/common.js"></script>
+</body>
+</html>

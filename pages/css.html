@@ -1,0 +1,348 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 학습 - UI/UX Learning</title>
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 좌측 사이드바 (공통 메뉴) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo">
+                    <span>UI/UX</span> Learning
+                </a>
+                <p class="logo-sub">웹 프론트엔드 학습 사이트</p>
+            </div>
+            
+            <!-- 검색창 -->
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="검색어를 입력하세요...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            
+            <!-- 네비게이션 메뉴 -->
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="../index.html">
+                            <span>🏠</span> 메인 페이지
+                        </a>
+                    </li>
+                    <li>
+                        <a href="html.html">
+                            <span>📄</span> HTML
+                        </a>
+                    </li>
+                    <li>
+                        <a href="css.html">
+                            <span>🎨</span> CSS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript.html">
+                            <span>⚡</span> JavaScript
+                        </a>
+                    </li>
+                    <li>
+                        <a href="jquery.html">
+                            <span>🔷</span> jQuery
+                        </a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="javascript:void(0);" class="submenu-toggle">
+                            <div><span>🎨</span> UI 컴포넌트</div>
+                            <span class="arrow">▼</span>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="ui-components.html#popup">팝업 (Popup)</a></li>
+                            <li><a href="ui-components.html#alert">알럿 (Alert)</a></li>
+                            <li><a href="ui-components.html#toast">토스트 (Toast)</a></li>
+                            <li><a href="ui-components.html#bottomsheet">바텀시트 (Bottom Sheet)</a></li>
+                            <li><a href="ui-components.html#slider">슬라이더 (Slider)</a></li>
+                            <li><a href="ui-components.html#textfield">텍스트 필드 (Text Field)</a></li>
+                            <li><a href="ui-components.html#checkbox-radio">체크박스 & 라디오</a></li>
+                            <li><a href="ui-components.html#dropdown">드롭다운 (Dropdown)</a></li>
+                            <li><a href="ui-components.html#toggle">토글 스위치 (Toggle)</a></li>
+                            <li><a href="ui-components.html#tab">탭 (Tab)</a></li>
+                            <li><a href="ui-components.html#accordion">아코디언 (Accordion)</a></li>
+                            <li><a href="ui-components.html#card">카드 (Card)</a></li>
+                            <li><a href="ui-components.html#carousel">캐러셀 (Carousel)</a></li>
+                            <li><a href="ui-components.html#lightbox">라이트박스 (Lightbox)</a></li>
+                            <li><a href="ui-components.html#gallery">갤러리 (Gallery)</a></li>
+                            <li><a href="ui-components.html#textarea">텍스트 영역 (Textarea)</a></li>
+                            <li><a href="ui-components.html#tooltip">툴팁 (Tooltip)</a></li>
+                            <li><a href="ui-components.html#breadcrumb">브레드크럼 (Breadcrumb)</a></li>
+                            <li><a href="ui-components.html#inputfield">인풋 필드 (Input Field)</a></li>
+                            <li><a href="ui-components.html#picker">피커 (Picker)</a></li>
+                            <li><a href="ui-components.html#coachmark">코치마크 (Coach Mark)</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>© 2026 UI/UX Learning</p>
+                <p>웹 프론트엔드 기술을 배워보세요</p>
+            </div>
+        </aside>
+        
+        <!-- 메인 콘텐츠 영역 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">CSS 기초</h1>
+                <p class="page-description">웹 페이지의 디자인과 레이아웃을 담당하는 스타일시트를 배워보세요.</p>
+            </div>
+            
+            <!-- CSS란? -->
+            <section class="content-section">
+                <h2 class="section-title">CSS란?</h2>
+                <p class="section-description">
+                    CSS(Cascading Style Sheets)는 HTML로 작성된 문서의 표시 방법을 기술하는 스타일 시트 언어입니다.
+                    웹 페이지의 색상, 폰트, 레이아웃 등을 자유롭게 설정할 수 있습니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/css-structure.png" alt="CSS 구조 예시" onerror="this.style.display='none'">
+                    <p class="image-caption">CSS 선택자와 속성</p>
+                </div>
+                
+                <!-- 프롬프트/설명 -->
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 알림</div>
+                    <div class="prompt-content">
+                        CSS는 <strong>선택자(Selector)</strong>, <strong>속성(Property)</strong>, <strong>값(Value)</strong>으로 구성됩니다.
+                        중괄호 {} 안에 속성과 값을 쌍으로 작성합니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">CSS</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">/* 선택자 { 속성: 값; } */</span>
+<span class="tag">h1</span> {
+    <span class="property">color</span>: <span class="value">#333333</span>;
+    <span class="property">font-size</span>: <span class="value">32px</span>;
+    <span class="property">font-weight</span>: <span class="value">bold</span>;
+}
+
+<span class="tag">p</span> {
+    <span class="property">color</span>: <span class="value">#666666</span>;
+    <span class="property">line-height</span>: <span class="value">1.8</span>;
+    <span class="property">margin-bottom</span>: <span class="value">16px</span>;
+}
+
+<span class="tag">.button</span> {
+    <span class="property">background-color</span>: <span class="value">#3498db</span>;
+    <span class="property">color</span>: <span class="value">white</span>;
+    <span class="property">padding</span>: <span class="value">12px 24px</span>;
+    <span class="property">border-radius</span>: <span class="value">8px</span>;
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 선택자 -->
+            <section class="content-section">
+                <h2 class="section-title">CSS 선택자</h2>
+                <p class="section-description">
+                    HTML 요소들을 선택하여 스타일을 적용하는 방법을 알아봅시다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/css-selectors.png" alt="CSS 선택자 종류" onerror="this.style.display='none'">
+                    <p class="image-caption">다양한 CSS 선택자</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box warning">
+                    <div class="prompt-title">⚠️ 주의사항</div>
+                    <div class="prompt-content">
+                        클래스 선택자는 점(.)을, ID 선택자는 샵(#)을 앞에 붙여야 합니다.
+                        ID는 페이지당 한 번만 사용하고, 클래스는 여러 번 재사용할 수 있습니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">CSS</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment">/* 태그 선택자 - 모든 h2 요소 */</span>
+<span class="tag">h2</span> {
+    <span class="property">color</span>: <span class="value">#2c3e50</span>;
+}
+
+<span class="comment">/* 클래스 선택자 - .intro 클래스 */</span>
+<span class="tag">.intro</span> {
+    <span class="property">font-size</span>: <span class="value">18px</span>;
+    <span class="property">color</span>: <span class="value">#555</span>;
+}
+
+<span class="comment">/* ID 선택자 - #header 아이디 */</span>
+<span class="tag">#header</span> {
+    <span class="property">background-color</span>: <span class="value">#fff</span>;
+    <span class="property">padding</span>: <span class="value">20px</span>;
+}
+
+<span class="comment">/* 자식 선택자 - nav 안의 a 요소 */</span>
+<span class="tag">nav</span> <span class="tag">a</span> {
+    <span class="property">text-decoration</span>: <span class="value">none</span>;
+    <span class="property">color</span>: <span class="value">#3498db</span>;
+}
+
+<span class="comment">/* 호버 상태 - 마우스 올렸을 때 */</span>
+<span class="tag">a:hover</span> {
+    <span class="property">color</span>: <span class="value">#2980b9</span>;
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 박스 모델 -->
+            <section class="content-section">
+                <h2 class="section-title">박스 모델 (Box Model)</h2>
+                <p class="section-description">
+                    CSS에서 모든 요소는 박스로 구성됩니다. 박스 모델을 이해하면 레이아웃을 정확하게 제어할 수 있습니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/css-boxmodel.png" alt="CSS 박스 모델" onerror="this.style.display='none'">
+                    <p class="image-caption">박스 모델의 구성 요소</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box success">
+                    <div class="prompt-title">✅ 팁</div>
+                    <div class="prompt-content">
+                        <code>box-sizing: border-box;</code>를 사용하면 패딩과 테두리를 요소의 너비에 포함시킬 수 있어
+                        레이아웃 계산이 훨씬 쉬워집니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">CSS</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="tag">.box</span> {
+    <span class="property">width</span>: <span class="value">200px</span>;
+    <span class="property">height</span>: <span class="value">100px</span>;
+    <span class="property">padding</span>: <span class="value">20px</span>;      <span class="comment">/* 내부 여백 */</span>
+    <span class="property">border</span>: <span class="value">2px solid #333</span>;  <span class="comment">/* 테두리 */</span>
+    <span class="property">margin</span>: <span class="value">16px</span>;         <span class="comment">/* 외부 여백 */</span>
+    <span class="property">box-sizing</span>: <span class="value">border-box</span>;
+}
+
+<span class="comment">/* flexbox로 중앙 정렬 */</span>
+<span class="tag">.center-box</span> {
+    <span class="property">display</span>: <span class="value">flex</span>;
+    <span class="property">justify-content</span>: <span class="value">center</span>;
+    <span class="property">align-items</span>: <span class="value">center</span>;
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Flexbox -->
+            <section class="content-section">
+                <h2 class="section-title">Flexbox 레이아웃</h2>
+                <p class="section-description">
+                    Flexbox는 효율적인 레이아웃을 만들 수 있는 강력한 CSS 모듈입니다.
+                </p>
+                
+                <!-- 이미지 -->
+                <div class="image-container">
+                    <img src="../assets/images/css-flexbox.png" alt="Flexbox 예시" onerror="this.style.display='none'">
+                    <p class="image-caption">Flexbox 레이아웃</p>
+                </div>
+                
+                <!-- 프롬프트 -->
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 알림</div>
+                    <div class="prompt-content">
+                        Flexbox는 <code>display: flex;</code>를 선언한 요소를 flex container로 만들고,
+                        그 안의 자식 요소들이 flex item이 됩니다.
+                    </div>
+                </div>
+                
+                <!-- 코드 예제 -->
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">CSS</span>
+                        <button class="code-copy-btn">복사</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="tag">.container</span> {
+    <span class="property">display</span>: <span class="value">flex</span>;
+    <span class="property">flex-direction</span>: <span class="value">row</span>;        <span class="comment">/* 행 방향 */</span>
+    <span class="property">justify-content</span>: <span class="value">space-between</span>; <span class="comment">/* 양쪽 정렬 */</span>
+    <span class="property">align-items</span>: <span class="value">center</span>;       <span class="comment">/* 세로 중앙 */</span>
+    <span class="property">gap</span>: <span class="value">16px</span>;
+}
+
+<span class="tag">.item</span> {
+    <span class="property">flex</span>: <span class="value">1</span>;  <span class="comment">/* 같은 비율로 확장 */</span>
+}
+
+<span class="comment">/* 반응형: 화면이窄으면 세로 배치 */</span>
+<span class="tag">@media</span> (<span class="property">max-width</span>: <span class="value">768px</span>) {
+    <span class="tag">.container</span> {
+        <span class="property">flex-direction</span>: <span class="value">column</span>;
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 연습 문제 -->
+            <section class="content-section">
+                <h2 class="section-title">연습 문제</h2>
+                <p class="section-description">
+                    이제 배운 내용을 바탕으로 연습 문제를 풀어보세요.
+                </p>
+                
+                <div class="example-box">
+                    <h3 class="example-title">문제: 카드 컴포넌트 만들기</h3>
+                    <p>다음 스타일의 카드 컴포넌트를 만들어보세요:</p>
+                    <ul class="content-list">
+                        <li>카드 전체 너비: 300px</li>
+                        <li>배경색: 흰색, 그림자 효과</li>
+                        <li>모서리 둥글기: 12px</li>
+                        <li>내부 여백: 20px</li>
+                        <li>마우스 올렸을 때 살짝 떠오르는 효과</li>
+                    </ul>
+                </div>
+                
+                <div class="prompt-box info">
+                    <div class="prompt-title">💡 도움말</div>
+                    <div class="prompt-content">
+                        <code>box-shadow</code>, <code>border-radius</code>, <code>transition</code> 속성을 활용해보세요.
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="../assets/js/common.js"></script>
+</body>
+</html>
